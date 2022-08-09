@@ -1,1 +1,0 @@
-All graphics go here.
