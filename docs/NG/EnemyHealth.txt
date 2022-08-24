@@ -1,0 +1,106 @@
+How to find edit enemy health with FCEUXD:
+by bbitmaster
+
+Enemy health is extremely easy to find and edit in almost any game with FCEUXD.
+In this tutorial, I'll take a completely random game, and show you how it's done
+
+For no particular reason, the game I chose was Ninja Gaiden 1. So lets get started.
+
+We'll start by trying to find and edit the first boss's health in the rom. Before
+we can do that though, we need to know where his health is at in ram. So, Start a
+new game, and fight your way through the first level, until you get to the door
+that leads to the boss, be sure to make a saved state before going through this door
+
+Using the cheat console isn't really that hard once you get the hang of it. What
+you're trying to do with is is search for values in the ram. We assume his health
+is a value that decreases each time we hit him. Although I have seen a couple of
+games where the value actually increases, we will not assume this, because that is
+rare.
+
+Using the cheat search is something which is hard to guide someone through step by step,
+because they may get different results each time. Here is what I personally just went
+through to get the value. You can use this as a rough guide for finding enemy health in ram.
+
+	1. Once I entered, the boss was in full health, so I opened up the cheat
+	console, and hit reset.
+
+	2. I hit him once, so that his health went down by 1 point, then, I pressed
+	the less than button in the cheat console to bring it down to 154
+	possibilities.
+
+	3. Then, I hit him again so his health went down again, and pressed the less
+	than button again. 63 possibilities now.
+
+	4. I played around a bit in the game without hitting him, and press the equal
+	to button (4 possibilities now)
+
+	5. I see that out of the 4 possibilities listed, two of them are currently equal
+	to the value $70, and $68. His health is much less than this, so I'll ignore them
+	The other two are both equal to $0e, which is 14 in decimal. That looks to be about
+	how many bars of health is on the screen for him. So it must be one of these.
+
+	6. Upon adding the first one to the cheat list, it seemed to work, his lifebar
+	didn't go down any, untill I hit him enough, then he suddenly died. so this must not
+	be it.
+
+	7. The second one worked great at giving him infinite health. So that must be it.
+
+I strongly suggest you find this using the cheat search to get practice. But I'll tell
+you the value I found anyway: $497
+
+Now, most games set the enemy's health to specific value upon loading the enemy. After this
+it has to detect when you hit him, and decrease it, untill it reaches 0. At this point
+he dies. If we're wanting to change his health, then we must find out where it first loads
+it at, so we can modify what it loads it with.
+
+To do this, go back to your state that I told you to save before entering the boss room, and
+open the debugger. Since you want to find out where the game stores his health, you must add
+a write breakpoint to $497, and go through that door with it set.
+
+The debugger should snap at this line:
+
+$E28B:9D 90 04  STA $0490,X @ $0497 = #$10
+That stores the A register into $497. Looking up a bit, we find 
+
+$E288:B9 30 B5  LDA $B530,Y @ $B547 = #$10
+This is what we're interested in, it loads A with $B547. So, that is what we want to change, $B547.
+
+Open up the hex editor and scroll down to $B547 in memory. You can't change it from here, but only
+from rom file editing mode. So right click on it, and select "go here in rom file." This should
+take you to offset $3557 in the rom file. Try typing in 15, and go back to the debugger to turn
+your breakpoint off (by double clicking on it), and hit run, and load your saved state.
+
+Congratulations, the boss now has 21 healthpoints instead of 16.
+
+If you roughly follow this method, you should be able to find and change enemy health in any other
+game as well.
+
+But we're not done yet! How would you like to give some regular enemies more health, so they take
+more than 1 hit to kill?
+
+First of all, what I have here is just a guess, I really don't have any idea for certain how the
+game keeps track of this. I just know from what I have seen in other games, that they usually like
+to keep variables like enemy health together, in a sort of array. When a new enemy is loaded, it
+usually fills an entry in these arrays.
+
+With this in mind, start a new game at the first level, then at the beginning of the level,
+before any enemy has appeared, add a write breakpoint to $497. Before you even see the first enemy,
+the debugger should snap at that same location
+$E288:B9 30 B5  LDA $B530,Y @ $B533 = #$00
+$E28B:9D 90 04  STA $0490,X @ $0497 = #$00
+
+This time it's loading from $B533, if you go there in the rom file, you'll see that it's 00. If you
+change it to 02, then those enemies will take 2 hits to kill.
+
+You can play through any part of the game with a write breakpoint set on $497, and any time a new
+enemy gets loaded into that position, you'll be able to easily find the offset for his health.
+
+Alternatively, you can see from:
+$E288:B9 30 B5  LDA $B530,Y
+That the health, from all the enemies probably starts at $B530, and we know that this is at $3540
+in the rom file. So You could change some random bytes there, untill you find the enemy you're
+looking for
+
+Anyway,
+
+Have Fun!

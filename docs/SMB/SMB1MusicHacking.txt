@@ -1,0 +1,893 @@
+COMPREHENSIVE GUIDE 
+to Super Mario Bros. 1 
+MUSIC HACKING 
+
+[Version 1.0]
+
+Copyright 2005-2008, Dr. Floppy 
+
+
+_________________
+TABLE OF CONTENTS 
+_________________
+
+
+(Ø) Table of Contents 
+
+(I) Intro 
+
+(II) Getting Started 
+
+(III) The SMB1 Music Engine 
+
+(IV) Music Programming 
+
+(V) Editing Music Headers 
+
+(VI) Editing Music Pointers 
+
+(VII) Advanced Procedures 
+
+(VIII) Miscellaneous Information 
+
+(IX) Troubleshooting 
+
+(X) Acknowledgements 
+
+
+
+
+(I) INTRODUCTION 
+
+
+	Greetings, and welcome to the culmination of roughly one thousand days of research! (I could've done it sooner, but found it necessary to throw school/work/life a bone every now & then.) 
+
+You hold in your hands (figuratively speaking) the first comprehensive guide to hacking the music of SMB1. By releasing this information, I hope to inspire a new wave of SMB1 hacks (and perhaps a few updates of current classics). Additionally, since music hacking is probably the most overlooked aspect of ROM hacking, I'd like to spurn a renewed effort towards filling this gap. 
+
+
+	1.1) Data Offsets 
+
+I should mention now that, unless otherwise stated, all data locations in this document are given as ROM addresses, WITH header. If you don't understand this distinction now, don't worry; we'll review it later. 
+
+
+
+(II) GETTING STARTED 
+
+
+	The procedure for music replacement is rather straightforward: 
+
+
+1) Find a song you want to put into the game. 
+
+2) Transcribe this song onto paper, arranged in separate sections for melody, harmony, bassline and percussion. 
+
+3) Convert each of these parts into code understood by the NES. 
+
+4) Enter this code into the appropriate part of the ROM. 
+
+5) Alter any relevant header and/or pointer information. 
+
+6) Check your work/fix any mistakes. 
+
+
+To begin, I assume you have or can readily obtain the following: 
+
+* A novel concept, i.e. a general idea of what you want to replace the SMB1 soundtrack with. This could be music from your favorite band, a compilation of favorite songs, or even original compositions! I list this first because it's paramount to getting any real-world value out of this document, and it's this vision which will motivate you to weather the inevitable bumps and setbacks on your quest. 
+
+* A SMB1 ROM. (Make sure it's the real deal and not that insipid underwater dungeon version.) 
+
+* A Hex Editor. I like Translhextion, but whatever you're comfortable with is fine. 
+
+* Knowledge as to how to work a Hex Editor. 
+
+* A basic understanding of musical notation. By this, I mean you can notate basic rhythms by ear in a way that makes sense to you. That said, this tutorial does make use of certain "official" rhythmic terminology. If the terms "quarter note" or "thirty-second rest" give you pause, you won't get very far with this document. Browse thru "Music Theory for Dummies" the next time you're at a bookstore, or just go scope out Jimbo's Sandbox™ for a quick lesson on rhythmic notation. 
+
+(To pick on a few recent Top 40 hits, Nelly Furtado's "Say It Right" and the Pussycat Dolls' "Don'tcha" have essentially the same backbeat. If you can recognize this, you're on the right track.) 
+
+* Equipment for musical notation. If you've got perfect pitch, this will be a mere pen and paper. For the remaining 99.99% of the population, you'll need some way to slow down or selectively pause the songs you're going to transcribe. Again, whatever works. A simple wave editor or tracking program like Modplug can be used to play/replay selected segments while you compare the notes to some external standard... 
+
+* Some external standard. This could be a mere $10 Casio electronic keyboard, provided it's in tune. (DON'T ASSUME IT IS!!!) Let's say you want to replace the 1-1 overworld theme with Outkast's "B.O.B." The song starts out with a few measures of ephemeral sparkly-melodic stuff in the background, and you'll probably have to play this over several times before you get it thoroughly transcribed. I recommend determining the rhythm first, then going back and assigning pitch values to each note. Check your educated guesses against the external standard device. Slow/selective replay will become your best friend! 
+
+* Patience!!!!!!! 
+
+
+
+(III) THE SMB1 MUSIC ENGINE 
+
+
+	There are several sections in the SMB1 ROM that deal with music; for now, we're just going to focus on the Big Three: the Pointer section, the Header section and the Music Data field itself. 
+
+If you've done any ROM hacking at all, you're probably familiar with the concept of text pointers; music pointers are pretty much the same thing, except they don't store the address of the relevant music itself. Instead, they store the address of the relevant music *header*. Think of the headers as a specialized filter the game scans on the way to the music data itself (whose address *is* contained within the header). Music is more complex than simple text, so it makes sense that there would be an additional relay involved between the pointers and data. 
+
+
+	3.1) Music Pointers [$791D-$794D] 
+
+
+	This quaint little section serves as the definitive playlist of every song in the game. Each of the forty-nine bytes refers the emulator to a location within the Music Header section, which in turn redirects the game to a song program within the Music Data itself. This is where you control which songs play on what level, after X event, etc. 
+
+Here is a key to the areas/events proxied by each byte. (Default values are in () parentheses.) 
+
+
+$791D: Mario Dies (A5) 
+$791E: Game Over (59) 
+$791F: Princess Rescued! (54) 
+$7920: Mushroom Retainer Rescued (64) 
+$7921: Game Over [alternate] (59) 
+$7922: Level Complete (3C) 
+$7923: Time Running Out! (31) 
+$7924: Silence #1 (4B)
+$7925: ????? (69) 
+$7926: Underwater Theme (5E) 
+$7927: Underground Theme (46) 
+$7928: Castle/Dungeon Theme (4F) 
+$7929: Cloud Theme (36) 
+$792A: Pre-pipe Theme [Used at beginning of 1-2, 2-2, 4-2 and 7-2] (8D) 
+$792B: Starman Theme (36) 
+$792C: Silence #2 [plays during "Level X-Y" screen] (4B) 
+$792D: Overworld Theme Slot #1 (8D) 
+$792E: Overworld Theme Slot #2 (69) 
+$792F: Overworld Theme Slot #3 (69) 
+$7930: Overworld Theme Slot #4 (6F) 
+$7931: Overworld Theme Slot #5 (75) 
+$7932: Overworld Theme Slot #6 (6F) 
+$7933: Overworld Theme Slot #7 (7B) 
+$7934: Overworld Theme Slot #8 (6F) 
+$7935: Overworld Theme Slot #9 (75) 
+$7936: Overworld Theme Slot #10 (6F) 
+$7937: Overworld Theme Slot #11 (7B) 
+$7938: Overworld Theme Slot #12 (81) 
+$7939: Overworld Theme Slot #13 (87) 
+$793A: Overworld Theme Slot #14 (81) 
+$793B: Overworld Theme Slot #15 (8D) 
+$793C: Overworld Theme Slot #16 (69) 
+$793D: Overworld Theme Slot #17 (69) 
+$793E: Overworld Theme Slot #18 (93) 
+$793F: Overworld Theme Slot #19 (99) 
+$7940: Overworld Theme Slot #20 (93) 
+$7941: Overworld Theme Slot #21 (9F) 
+$7942: Overworld Theme Slot #22 (93) 
+$7943: Overworld Theme Slot #23 (99) 
+$7944: Overworld Theme Slot #24 (93) 
+$7945: Overworld Theme Slot #25 (9F) 
+$7946: Overworld Theme Slot #26 (81) 
+$7947: Overworld Theme Slot #27 (87) 
+$7948: Overworld Theme Slot #28 (81) 
+$7949: Overworld Theme Slot #29 (8D) 
+$794A: Overworld Theme Slot #30 (93) 
+$794B: Overworld Theme Slot #31 (99) 
+$794C: Overworld Theme Slot #32 (93) 
+$794D: Overworld Theme Slot #33 (9F) 
+
+
+The byte values are determined by subtracting $791E from the CPU address of the relevant music header's first byte. 
+
+Obviously, the original programmers placed a great deal of import on the Overworld Theme. Unfortunately, budding soundtrack reprogrammers are forced to work within these confines (unless you're super-1337-#@rdc0re, and feel like ASM-ing your way out of this corner; G*d be with you!). It's not as bad as it seems; your overworld theme replacement will most likely be your "main course" song, and as such will necessitate being broken up into several sections. Since the first slot pertains to a "throwaway" sequence which IS NOT repeated, you're left with thirty-two remaining slots. Thirty-two. That's a very convenient number when you think about it... 
+
+
+	3.2) Music Headers [$794E-$79C7] 
+
+
+As explained above, this section serves as a sort of filter between the music pointers and the hard data, adding in the extra information required for music execution. This information is best explained by analyzing the header format: 
+
+t-X-Y-1-2-3 
+
+X = Music Data CPU address (low byte) 
+Y = Music Data CPU address (high byte) 
+
+	This address is the starting point for the tune in question. The next three entries in the header relate to this address: 
+
+1 = # of bytes after starting point to Triangle part 
+2 = # of bytes after starting point to Pulse-1 part 
+3 = # of bytes after starting point to Noise part (optional) 
+
+The "t" byte codes for the tempo/rhythmic offset used for the song. Even though this byte is first, the Music Pointers are based on the "X" byte being the official starting point for headers. The game stores six different tempos/rhythmic offsets: 00, 08, 10, 18, 20, and 28. $18 is the offset used for the overworld music, and throughout most of the game. 
+
+[The rhythmic offsets can be edited if one so desires; see the "Advanced Procedures" section.]
+ 
+
+Music headers are always five or six bytes long, depending upon whether or not the tune in question is for an Area (6) or Event (5) song. The reasoning behind this is that the SMB1 engine does not allow for Event Music to contain a Noise part. It's also worth noting that the Music Header section doesn't have to end at $79C7; you can end it early to give yourself more space for music programming. 
+
+
+Here are the default Music Header locations: 
+
+
+$794F: Time Running Out theme
+$7954: Starman theme
+$795A: Level Complete theme
+$7964: Underground theme
+$7969: Nothing (played during silent parts of game)
+$796D: Dungeon theme
+$7972: Princess' Rescued theme
+$7977: Game Over theme
+$797C: Underwater theme
+$7982: Dungeon Clear! theme
+$7987: Overworld Theme Part 1
+$798D: Overworld Theme Part 2
+$7993: Overworld Theme Part 3
+$7999: Overworld Theme Part 4
+$799F: Overworld Theme Part 5
+$79A5: Overworld Theme Part 6
+$79AB: Overworld Theme Part 7
+$79B1: Overworld Theme Part 8
+$79B7: Overworld Theme Part 9
+$79BD: Overworld Theme Part 10
+$79C3: "You Just Died" theme
+
+
+	3.3) Music Data [$79C8-$7F0F] 
+
+
+	This is the main battleground; every note of every song is programmed somewhere within this range. You've got 1,352 bytes at your disposal (the original game only uses 1,349), so use them wisely! 
+
+In the interest of coherence, I've decided to give music programming its own section. 
+
+
+
+(IV) MUSIC PROGRAMMING 
+
+
+	There are two things I want to make crystal clear at the outset of this section: 
+
+A) All rhythmic values relate to a moderate tempo wherein the infamous "Mario Hook" that kicks off the original 1-1 theme (E-E-E-C-E-G) constitutes ONE MEASURE (the final three eighth notes of which are pure silence). This tempo is assigned by a header t-value of $18. 
+
+B) I make liberal use of terms like "12th note", "24th note" and "48th note" with full awareness that no such things exist in "proper" musical terminology. These terms refer to single members of eighth-, sixteenth- and thirtysecond-note triplets, respectively. Rather than use such clunky phraseology, I prefer to use language that conveys the relevant information in a concise (mathematically-accurate!) manner. 
+
+
+SMB1 music consists of four "instrument" channels: Pulse 2 (melody), Pulse 1 (harmony), Triangle (the bassline) and Noise (percussion). The latter channel consists of four sound types: a kick drum, a pseudo-snare, something resembling a hi-hat, and silence. I'm going to repeat that first part again to hammer it home: 
+
+Pulse 2 = Melody 
+Pulse 1 = Harmony 
+Triangle = Bassline 
+Noise = Percussion 
+
+
+	4.1) PULSE 2 & TRIANGLE CHANNEL CODING 
+
+
+When you code your new song programs, you'll write the Pulse 2 program first, followed by the Pulse 1, Triangle and Noise channels. (You can reverse the order of Triangle and Pulse 1, since that's the way the music headers arrange them.) Pulse 2 and Noise sequences must end in "00". 
+
+Here's a slight curveball: Pulse 2 and Triangle programs use one encoding mechanism, while Pulse 1 and Noise programs use another. The first mechanism consists of a "Rhythm Byte", followed by a series of "Pitch Bytes" which all abide by the established rhythm. When your rhythm changes, you must insert a new Rhythm Byte, even if it's just for one note. (Annoying, huh?) The game recognizes eight different Rhythm Bytes:
+
+
+87: "12th" Note (i.e. one member of an eighth-note triplet) 
+86: Quarter Note 
+85: Dotted 8th-Note 
+84: 8th Note 
+83: 24th Note 
+82: 16th Note 
+81: 48th Note (used for buzz-rolls) 
+80: Dotted Quarter Note 
+
+
+In order of decreasing duration: 
+
+
+80: Dotted Quarter Note 
+86: Quarter Note 
+85: Dotted 8th-Note 
+84: 8th Note 
+87: 12th Note 
+82: 16th Note 
+83: 24th Note 
+81: 48th Note 
+
+
+
+To further illustrate this method, let's use the melody portion of the "SMB Hook" as an example. We start with a 16th-note E, followed by two 8th-note E's, a 16th-note C, another 8th-note E, and a G which we'll assume is a quarter note followed by a quarter-note rest. (We could consider it an 8th-note G followed by three 8th-note rests, but that would be a waste of programming space as we'll come to understand.) 
+
+Paying attention only to the Rhythm Bytes, we'd program the line as such: 
+
+82-(E)-84-(E)-(E)-82-(C)-84-(E)-86-(G)-(rest) 
+
+
+So far so good? 
+
+Now, let's fill in the gaps with the appropriate Pitch Bytes: 
+
+82-(34)-84-(34)-(34)-82-(2C)-84-(34)-86-(3A)-(04) 
+
+
+Now, since we're programming a Pulse 2 melodic line, we have to end with "00." 
+
+82-34-84-34-34-82-2C-84-34-86-3A-04-00 
+
+
+That's it! Those thirteen bytes, in the right location, will make the Pulse 2 channel play the infamous "SMB Hook." All Triangle channel parts will be programmed the same way, but without the "00" at the end. Now is probably a good time to mention that the Pulse 2 Channel program sets the standard for how long a song will be. 
+
+I want to repeat that, because it's important: Songs are only as long as the Pulse 2 channel is. By this, I mean if Pulse 2 is coded for a two-measure part, all other channels will automatically restart after two measures, even if they haven't yet uttered a sound! This is why you want to make absolutely sure you program each channel for the same musical duration. 
+
+One pseudo-exception to the above paragraph is the Noise channel; it will revert to its beginning upon reaching its "00" terminus, or when the Pulse 2 channel ends (whichever comes first). This is rather convenient since most Top 40 songs consist of highly-repetitive percussion parts; you can program a two-measure percussion part ONCE, and let it repeat itself throughout an eight-measure song. 
+
+The Pulse 2 and Triangle channels have a range of nearly four octaves; typically, only the bottom two will be utilized. (Everything above C-5 is incredibly high-pitched. also note that the byte values stop progressing in a linear fashion above Ab4.) [Remember: Pulse-2 programs end in "00"; Triangle programs DO NOT.] 
+
+
+
+C-6: 	56?
+B-5: 	54?
+Bb5: 	52?
+A-5: 	70?
+Ab5: 	50 
+G-5: 	4E
+F#5: 	??
+F-5: 	4C
+E-5: 	44
+Eb5: 	4A
+D-5: 	48
+C#5: 	46
+
+C-5: 	64 
+B-4: 	42 
+Bb4: 	3E (yes, this breaks sequence)
+A-4: 	40 (ditto)
+Ab4: 	3C
+G-4: 	3A
+F#4: 	38
+F-4: 	36
+E-4: 	34
+Eb4: 	32
+D-4: 	30
+C#4: 	2E
+C-4: 	2C [This is Middle C]
+B-3: 	2A
+Bb3: 	28
+A-3: 	26
+Ab3: 	24
+G-3: 	22
+F#3: 	20
+F-3: 	1E
+E-3: 	1C
+Eb3: 	1A
+D-3: 	18
+C#3: 	16
+C-3: 	14
+B-2: 	12
+Bb2: 	10
+A-2: 	62 (don't ask) 
+Ab2: 	0E
+G-2:	0C
+F#2: 	0A
+F-2: 	08
+E-2: 	06
+Silence: 04 	
+
+
+	4.2) PULSE 1 CHANNEL CODING 
+
+
+Now that we've covered the coding schemes for the Pulse 2 and Triangle channels, let's address the Pulse 1 and Noise channels. These parts are coded more efficiently, as both the rhythm and pitch of a note are stored within a single byte. The flip side of this is that you'll almost certainly need to make a reference chart for the 256 values. (You'll likely do the same for the Pulse 2 and Triangle channels, but those constants can eventually be committed to memory.) 
+
+Another minor disadvantage to the "unibyte" storage format of Pulse 1 data is a somewhat smaller note range. While the Pulse 2 and Triangle channels have nearly four octaves to work with (including all the crazy stuff in Octave 5), the Pulse-1 channel only has a range of about 2½ octaves. Also, notice that the note "A" is only available in the fourth octave, while several redundant A-flats sit idly by. [There's a way to alter available pitches; see the "Advanced Procedures" section.] 
+
+Parts for the Pulse-1 channel DO NOT end in "00", nor do they repeat endlessly until the Pulse-2 channel completes itself. If you wish to NOT program a Pulse-1 part for a particular song (a reasonable decision in some cases), simply program the Triangle part after the "00" terminus of Pulse-2's program. (There's one additional step required, which we'll discuss in the next section.) 
+
+Also note that Pulse-1 is the channel used for random gameplay sound effects, such as coin collection, powering up, etc. These sound effects will temporarily override the Pulse-1 music program, which is why the main melody should almost always be given to the Pulse-2 (or in some cases, the Triangle) channel. Plot your arrangements accordingly. 
+
+
+
+(Dotted Quarter Notes) 
+
+3E: Bb5
+3C: Ab5
+3A: G-5
+38: F#5
+36: F-5
+34: E-5
+32: Eb5
+30: D-5
+2E: C#5
+2C: C-5
+2A: B-4
+28: Bb4
+26: A-4
+24: Ab4
+22: G-4
+20: F#4
+1E: F-4
+1C: E-4
+1A: Eb4
+18: D-4
+16: C#4
+14: C-4
+12: B-3
+10: Bb3
+0E: Ab3
+0C: G-3
+0A: F#3
+08: F-3
+06: E-3
+04: Silence 
+02: D-6
+
+
+(Quarter Notes) 
+
+BF: Bb5
+BD: Ab5
+BB: G-5
+B9: F#5
+B7: F-5
+B5: E-5
+B3: Eb5
+B1: D-5
+AF: C#5
+AD: C-5
+AB: B-4
+A9: Bb4
+A7: A-4
+A5: Ab4
+A3: G-4
+A1: F#4
+9F: F-4
+9D: E-4
+9B: Eb4
+99: D-4
+97: C#4
+95: C-4
+93: B-3
+91: Bb3
+8F: Ab3
+8D: G-3
+8B: F#3
+89: F-3
+87: E-3 
+85: Silence 
+83: D-6
+81: Ab5
+
+
+(Dotted 8th Notes) 
+
+7F: Bb5
+7D: Ab5
+7B: G-5
+79: F#5
+77: F-5
+75: E-5
+73: Eb5
+71: D-5
+6F: C#5
+6D: C-5
+6B: B-4
+69: Bb4
+67: A-4
+65: Ab4
+63: G-4
+61: F#4
+5F: F-4
+5D: E-4
+5B: Eb4
+59: D-4
+57: C#4
+55: C-4
+53: B-3
+51: Bb3
+4F: Ab3
+4D: G-3
+4B: F#3
+49: F-3
+47: E-3 
+45: Silence 
+43: D-6
+41: Ab5
+
+
+(8th Notes) 
+
+3F: Bb5
+3D: Ab5
+3B: G-5
+39: F#5
+37: F-5
+35: E-5
+33: Eb5
+31: D-5
+2F: C#5
+2D: C-5
+2B: B-4
+29: Bb4
+27: A-4
+25: Ab4
+23: G-4
+21: F#4
+1F: F-4
+1D: E-4
+1B: Eb4
+19: D-4
+17: C#4
+15: C-4
+13: B-3
+11: Bb3
+0F: Ab3
+0D: G-3
+0B: F#3
+09: F-3
+07: E-3 
+05: Silence 
+03: D-6
+01: Ab5
+
+
+(12th Notes) 
+
+FF: Bb5
+FD: Ab5
+FB: G-5
+F9: F#5
+F7: F-5
+F5: E-5
+F3: Eb5
+F1: D-5
+EF: C#5
+ED: C-5
+EB: B-4
+E9: Bb4
+E7: A-4
+E5: Ab4
+E3: G-4
+E1: F#4
+DF: F-4
+DD: E-4
+DB: Eb4
+D9: D-4
+D7: C#4
+D5: C-4
+D3: B-3
+D1: Bb3
+CF: Ab3
+CD: G-3
+CB: F#3
+C9: F-3
+C7: E-3 
+C5: Silence 
+C3: D-6
+C1: Ab5
+
+
+(16th Notes) 
+
+BE: Bb5
+BC: Ab5
+BA: G-5
+B8: F#5
+B6: F-5
+B4: E-5
+B2: Eb5
+B0: D-5
+AE: C#5
+AC: C-5
+AA: B-4
+A8: Bb4
+A6: A-4
+A4: Ab4
+A2: G-4
+A0: F#4
+9E: F-4
+9C: E-4
+9A: Eb4
+98: D-4
+96: C#4
+94: C-4
+92: B-3
+90: Bb3
+8E: Ab3
+8C: G-3
+8A: F#3
+88: F-3
+86: E-3
+84: Silence 
+82: D-6
+80: Ab5
+
+
+(24th Notes) 
+
+FE: Bb5
+FC: Ab5
+FA: G-5
+F8: F#5
+F6: F-5
+F4: E-5
+F2: Eb5
+F0: D-5
+EE: C#5
+EC: C-5
+EA: B-4
+E8: Bb4
+E6: A-4
+E4: Ab4
+E2: G-4
+E0: F#4
+DE: F-4
+DC: E-4
+DA: Eb4
+D8: D-4
+D6: C#4
+D4: C-4
+D2: B-3
+D0: Bb3
+CE: Ab3
+CC: G-3
+CA: F#3
+C8: F-3
+C6: E-3
+C4: Silence 
+C2: D-6
+C0: Ab5
+
+
+(48th Notes) 
+
+7E: Bb5
+7C: Ab5
+7A: G-5
+78: F#5
+76: F-5
+74: E-5
+72: Eb5
+70: D-5
+6E: C#5
+6C: C-5
+6A: B-4
+68: Bb4
+66: A-4
+64: Ab4
+62: G-4
+60: F#4
+5E: F-4
+5C: E-4
+5A: Eb4
+58: D-4
+56: C#4
+54: C-4
+52: B-3
+50: Bb3
+4E: Ab3
+4C: G-3
+4A: F#3
+48: F-3
+46: E-3
+44: Silence 
+42: D-6
+40: Ab5 
+
+
+
+	4.3) NOISE CHANNEL CODING 
+
+
+	As stated earlier, your entire percussion section has been simplified to a kick drum, a snare and a hihat. There is no intentional tonality for any of them, so you don't have to worry about pitches anymore. (My sympathies for those of you hoping to recreate the tenor drum portion of Genesis' "In the Air Tonight.") 
+
+
+(Dotted Quarter Notes) 
+
+Snare: 30
+Kick: 20
+Hihat: 10
+Silence: 04
+
+(Quarter Notes) 
+
+Snare: B1
+Kick: A1
+Hihat: 91
+Silence: 85 
+
+(Dotted 8th Notes) 
+
+Snare: 71
+Kick: 61
+Hihat: 51
+Silence: 45 
+
+(8th Notes)
+
+Snare: 31
+Kick: 21
+Hihat: 11
+Silence: 05
+
+(12th Notes)
+
+Snare: F1
+Kick: E1
+Hihat: D1
+Silence: C5
+
+(16th Notes)
+
+Snare: B0
+Kick: A0
+Hihat: 90
+Silence: 84
+
+(24th Notes)
+
+Snare: F0
+Kick: E0
+Hihat: D0
+Silence: C4
+
+(48th Notes)
+
+Snare: 70
+Kick: 60
+Hihat: 50
+Silence: 44
+
+
+
+(V) EDITING MUSIC HEADERS 
+
+
+	After writing a successful replacement for one or any of the original SMB1 tunes, you'll need to know where to put the new data. And if your new song happens to contain more bytes than the original, you'll need to know how to re-route the game to the subsequent song program (which will also have to be redone, unless you want squirrely junk). All of this, and more, is arranged in the Music Header Section. 
+
+Think of the Music Header section as an extension of the music programs themselves. While you were arranging rhythm and pitch bytes linearly across four seperate channels, you may have wondered how the game is going to distinguish your Pulse-2 program from the Triangle from everything else? Well, the Music Header section is how. 
+
+Let's consult the first Music Header entry in the original SMB1 to further illustrate the concept: 
+
+
+$7954: Starman Theme = B8-F9-2E-1A-40 
+
+
+What this means is that the Starman Music (aka the Pulse-2 channel program) begins at $79C8. The Triangle channel program begins "2E" bytes after this point; the Pulse-1 channel begins "1A" bytes after this point; and the Noise channel begins "40" bytes after this point. 
+
+"Okay," you say, "I understand the 2E-1A-40 thing, but how do you get $79C8 from 'B8-F9'?!?" 
+
+Well, it isn't as difficult as it first seems. For starters, know that the computer reads such addresses in flip-mode, i.e. the first byte holds the last half of the address and vice-versa. In other words, "B8-F9" is interpreted as "$F9B8". 
+
+Now, understand that we're coding for CPU addresses, which are $8000 bytes higher than conventional ROM addresses. Subtract $8000 from "F---" and you wind up with 7---. 
+
+The final correction has to do with the extra line of code inserted at the beginning of ROMs in order for them to display correctly on conventional emulators. This line accounts for an extra $10 bytes which must be subtracted from ROM addresses to yield the correct CPU address. In this case, we're going from CPU -> ROM, so we have to *add* the $10. Thus, "B8" becomes "C8". 
+
+If the last two paragraphs seem daunting, don't dispair. Just remember that you, the human, view data as being located at a ROM address, while the computer itself sees that same data at a different, CPU address. 
+
+ROM Address + $8000 - $10 = CPU Address 
+CPU Address - $8000 + $10 = ROM Address 
+
+[Don't forget that the computer reads CPU addresses in flip-mode, i.e. low-byte (second part) first, high-byte (first part) next.] 
+
+
+One weird thing about the Music Header is the inclusion of a single byte, DIRECTLY PRIOR TO the low-byte / high-byte CPU address of the Pulse-2's starting point. This byte selects the rhythmic offset for the song. (Starman's original value is $20. If you want a good, generic value to use as a placeholder, try $18, which is the original game's Overworld music tempo.) 
+
+Including the tempo/FX byte, Music Headers should be six bytes long for Area Music and five bytes long for Event Music. (This is because Event Music doesn't have an active Noise channel.) 
+
+If you've decided that one of your replacement songs won't have Pulse-1, you'll need to put "$00" in the Pulse-1's header offset. (Doing this for the Triangle channel's header offset will result in parallel voice motion between the Pulse-2 and Triangle channels, i.e. both "instruments" playing the same part. This may seem cheap, but if you don't have an independent Triangle part planned, it's worth considering. 
+
+
+
+VI) EDITING MUSIC POINTERS 
+
+
+	This is the final procedure in directing the game to your new song. Depending upon the nature of your alterations, you might not need to do anything! For example, if you decided to replace the "Mushroom Retainer Rescued" song with something of equal or lesser byte length, you wouldn't need to do anything other than re-orient the individual channel offsets within that particular music header. The only time you need to mess with the Music Pointer section is when you alter the starting points of the headers, or wish to reassign music to different parts of the game. 
+
+The latter objective is literally plug-and-play, and the former isn't much more difficult. Simply take the CPU address of the X-value of your new music header (this would be the byte after the tempo byte) and subtract from it $791E. The result is your new pointer value. 
+
+
+
+VII) ADVANCED PROCEDURES 
+
+
+	7.1) Adding/Removing Percussion from Songs 
+
+
+	Ever notice how the Underground and Dungeon themes don't have a percussion section? Yeah, me neither. At least, not until I tried replacing them with songs rich in percussion. 
+
+Fear not, for the fix is quick and easy. Simply go to $7880, where you should find a default value of "F3". If you want to instantly enable percussion in ALL Area Music (there is no percussion in Event Music), change this to "7F". 
+
+But if you wish to selectively enable/disable percussion in any one of the seven Area Music songs, you'll need to create a customized byte for this slot! Consult the following table to assign values of "0" (no percussion) and "1" (yes percussion) to their appropriate positions. 
+
+Bit 0 = Overworld 
+Bit 1 = Water 
+Bit 2 = Underground 
+Bit 3 = Dungeon 
+Bit 4 = Cloud 
+Bit 5 = Pipe Intro 
+Bit 6 = Starman 
+Bit 7 = Silence 
+
+
+	7.2) Enabling the Pulse-1 Channel in Underground Music 
+
+
+	Short Version: Change the byte at $76D9 from $04 to $80. 
+
+Long Version: Alter the byte at $76D9 according to the offsets listed in section 7.1, depending upon which songs you wish to have Pulse-1 enabled/disabled. (This time, "0" means "yes Pulse-1", while "1" means "no Pulse-1".) 
+
+
+	7.3) Altering Rhythmic Offsets 
+
+
+	The Rhythmic Offset section goes from $7F76 to $7FA5. It consists of six, 8-byte sequences, which respectively determine the note duration for the six tempo presets ($00, $08, $10, $18, $20, $28). Each eight-byte segment represents the values assigned to Rhythm Bytes 80, 81, 82,...87 within each of these presets. Put another way: 
+
+
+Rhythm Byte: 80-81-82-83-84-85-86-87 
+____________________________________ 
+
+Preset $00:  05-0A-14-28-50-1E-3C-02 
+
+Preset $08:  04-08-10-20-40-18-30-0C 
+
+Preset $10:  03-06-0C-18-30-12-24-08 
+
+Preset $18:  36-03-09-06-12-1B-24-0C 
+
+Preset $20:  24-02-06-04-0C-12-18-08 
+
+Preset $28:  12-01-03-02-06-09-0C-04 
+
+
+Remember that these numbers are all in hex, i.e. "$20" represents a note duration double that of "$10", which itself is twice that of "$08", etc. You music theory/math geeks will instantly recognize the value of altering this section. For example, you could replace the mostly-useless dotted eighth note (85) with a half note or whole note, thus allowing more efficient silence programming. Or, you could add a thirty-second note duration for cleaner snare drum rolls. If your song is 100% simple-meter in nature, you can replace the compound-meter bytes and vice versa. 
+
+One word of caution: when the timer dips below 100, the "Hurry Up!" fanfare sounds and the level music tempo upgrades to the next higher preset. In other words, the 1-1 theme (which uses tempo preset $18 as its default) goes to preset $20. (Preset $20 is the default Starman tempo.) The Underwater music (default $08) upgrades to preset $10. And so on, and so forth. This means that when you rewrite a given preset, you must alter the next one accordingly. Otherwise, your level music can go from a preset where $85 means "32nd note", to another preset where $85 codes for "dotted eighth note". Rhythmic chaos ensues. 
+
+The byte at $76D2 seems to tell the game what value to add to the regular tempo preset once the clock dips below 100. Changing this from $08 to $00 is a no-brainer, effectively expanding your independent preset bank from three to six. However, the unfortunate side effect is that all levels will revert to invincibility music once the timer leaves triple-digit territory. (I still have no idea why this is.) 
+
+
+
+	7.4) Altering Pitch Offsets 
+
+
+	The Pitch Offset section goes from $7F10 to $7F75. It encodes frequencies for even byte values from $00 to $64. Frequencies are encoded sequentially, in two-byte installments. I haven't the slightest clue as to how the game converts this information into actual frequencies, but I do know that higher values correspond with lower frequencies and vice-versa. You can usually arrive at desired frequencies (such the missing A-2 and A-4) by analyzing the value patterns of neighboring notes. This isn't as easy as splitting the difference, since Western music uses something called equal temperment (which needn't be explained here). Just realize that the difference between two adjacent frequencies gets progressively smaller as you go up the frequency ladder. 
+
+Also note that the Pulse-1 channel, due to its compact encoding method, is restricted to frequencies within the first thirty-two offsets. 
+
+(As a bonus, I'll reveal that the values for A-2 and A-4 are 01-FC and 00-7E, respectively.) 
+
+
+
+VIII) MISCELLANEOUS 
+
+
+Some areas for future research include multiple pointer themes (for stuff other than 1-1), recoding certain sound effects so they don't cut off the Pulse channels, determining how the frequency-encoding mechanism from Section 7.4 correlates with actual tonal frequencies, and sidestepping the invincibility music glitch mentioned in Section 7.3. If you discover how to do any of this, or figure out something not addressed in this document, by all means let me know! 
+
+
+
+IX) TROUBLESHOOTING 
+
+
+	9.1) Something isn't working the way this document said it would! 
+
+First, re-read the section to be certain you followed everything to the letter. If that doesn't help, it might be a typo or miscommunication. Contact me at DrFloppyMD@aol.com, or PM me at Romhacking.net. 
+
+
+	9.2) I don't understand what X is, or what you mean by Y! 
+
+Follow the procedure outlined in Section 9.1. 
+
+
+	9.3) You got the data regarding Z wrong! 
+
+My bad. Please let me know about it so it can be corrected in a future edition. 
+
+
+	9.4) All of your addresses include headers; I hate that! 
+
+Subtract $10. 
+
+
+	9.5) What about sound effects, the "1-UP" tones, etc.? 
+
+Ugh, some other time, okay? 
+
+
+
+X) ACKNOWLEDGEMENTS 
+
+
+	First off, I'd like to thank Necrosaro for writing his SMB1 Music Data Documentation tutorial, which provided my only direction in the cracking of SMB1's music code. Next, I'd like to credit Adderall™ and Diet Cherry Pepsi™, the combination of which is deliciously conducive to the ROM hacking process. Other accolades (in no particular ordeR) include: 
+
+
+Nightcrawler of RomHacking.net, for organizing and maintaining what has become the leading ROM hacking repository on the Internet. 
+
+Jomb and Dimi Glivver of BadHacks.net, for providing us renegade ROM hackers a forum to showcase our, um... talents. 
+
+DJmollusk, for his continued support concerning all things technical. 
+
+Michael Cretu, aka Enigma, whose debut album "MCMXC a.D." has provided a lifetime of inspiration, as well as the impetus for this very document. 
+
+
+
+     ~*~*~*~*~*~*~*~
+
+Floppyright 2008, Dr. Floppy 
+

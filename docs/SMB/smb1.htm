@@ -1,0 +1,228 @@
+<html><head>
+<style type="text/css">
+<!--
+
+a {
+  text-decoration: none
+  }
+a:hover {
+  text-decoration: underline;
+  color: #FFCC66
+  }
+
+-->
+</style>
+<title>The NIFTY Page-O-Hacks</title>
+</head>
+
+<body text="#FFFFFF" bgcolor="#9999FF" link="#FF9900" vlink="#FF9900" alink="#FFFFCC" background="mushroom.gif" bgproperties="fixed">
+
+<center>
+<table bgcolor="#000000" cellpadding=1><tr><td>
+<table bgcolor="#FF9900" cellpadding=1><tr><td>
+<img src="logo.gif" alt="The NIFTY Page-O-Hacks">
+</td></tr></table>
+</td></tr></table>
+<table bgcolor="#993300" cellpadding=3 align="center"><tr><td>
+PROUDLY PRESENTS...
+<br>
+<center><img src="smb1.gif" alt="The Assorted Mario Hacking Shop"></center>
+<p align=right><font size=1>By DarKnight13</font></p>
+
+</td></tr></table>
+<br>
+
+<table bgcolor="#993300" cellpadding=3 align="center"><tr><td>
+<font size="+1">How To Use This Info:</font>
+<br>
+1. Open the ROM in your hex editor.
+<br>
+2. Go to the offset you want to modify.
+<br>
+3. Type in the hex value of how you want to change it.
+<br>
+4. Save it.
+<br>
+5. Be happy!
+<br>
+Note: The offset for the title screen version(tsv) is first followed by the offset for the non-title screen version(ntsv).  Non-title screen version offsets are $200 ($=hex) less than title screen version offsets.
+<br>
+
+<p><b>Fireballs</b>
+<br>
+Movement and Combustion:
+<br>
+<i>Offset $63E2(tsv) $61E2(ntsv)</i>
+<br>
+1C - normal
+<br>
+1B - explode on contact with anything (except Mario)
+<br>
+19 - appear in the air and just bounce along the top of the sky
+<br>
+15 - straight forward
+<br>
+13 - same but bounces off the corners of blocks every now and again.
+<br>
+10 - explode on contact but don't hurt anything
+<br>
+FF - explode on Mario (hehe) but don't hurt him
+<br>
+CF - kill first enemy on the screen when you shoot a fireball regardless on whether or not you actually hit it
+<br>
+9F - shoot a fireball then jump to launch into the air; jump and shoot a fireball in the air to either shoot up or shoot down (sometimes through floor)
+</p>
+
+<p>Height and Angle:
+<br>
+<i>Offset $63FB(tsv) $61FB(ntsv)</i>
+<br>
+F8 - normal
+<br>
+D0 - 2 blocks above Mario
+<br>
+CA - 3 blocks above Mario
+<br>
+FE - shoot slightly farther
+<br>
+FC - shoot much farther
+<br>
+F7 - straight ahead; misses goombas but sometimes hits koopa troopas
+</p>
+
+<p><b>Mushrooms, Goombas, and Koopa Troopas, Oh My!</b>
+<br>
+Properties:
+<br>
+<i>Offset $6206(tsv) $6006(ntsv)</i>
+<br>
+03 - normal
+<br>
+E0 - everything that touches ground bounces
+<br>
+E1 - everything that would bounce in E0 falls and some things walk through walls.
+<br>
+E6 - you can't stomp anything but you bounce off ie. goombas flatten then pop back up
+<br>
+FF - everything falls through the floor
+<br>
+17 - everything is bouncing around and giving you lots of points.
+<br>
+38 - 17 without the points
+<br>
+39 - enemies bounce after you
+<br>
+3B - everything bounces until it hits the lowest ground (cracked blocks) then it is carried away and can't hurt you.
+<br>
+42 - most things are scared and bounce away!
+<br>
+43 - most things are scared and run away even through bricks; jump off cliffs and then bounce if they land on ground
+<br>
+4D - 43 with less bounce
+<br>
+54 - everything runs VERY quickly your way through anything but doesn't turn around
+<br>
+56 - everything runs quickly your way through anything but does not turn around
+</p>
+
+<p>Stomp Reaction:
+<br>
+<i>Offset $5BE5(tsv) $59E5(ntsv)</i>
+<br>
+04 - normal
+<br>
+89 - walk flat (can still hurt you)
+<br>
+49 - small spring
+<br>
+29 - fall left
+<br>
+69 - fall right
+<br>
+09 - flatten then unflatten while falling
+<br>
+<i>Offset $5A95(tsv) $5995(ntsv)</i>
+<br>
+01 - fall down
+<br>
+49 - traffikoopa (morph to turtle; keep stomping to change to red, then green, then red, ect.)
+<br>
+<i>Offset $5AE2(tsv) $59E2(ntsv)</i>
+<br>
+00 - don't flatten but turn around
+<br>
+01 - unflatten quickly (can bounce off of multiple times to get 1ups)
+<br>
+02 - unflatten quickly (no multi-bounce)
+<br>
+30 - disappear in 30 seconds
+<br>
+FF - stay flat and don't disappear
+</p>
+
+<p><b>Jumps</b>
+<br>
+<i>Note: The lower the value, the higher the jumps. Experiment!</i>
+<br>
+Standing:
+<br>
+<i>Offset $3634(tsv) $3434(ntsv)</i>
+<br>
+20 - normal
+<br>
+19 - Luigi jumps
+<br>
+00 - float up as long as you hold the button
+<br>
+I'm not sure what the next byte means but set it to whatever you put standing jumps as.
+<br>
+Walking:
+<br>
+<i>Offset $3636(tsv) $3436(ntsv)</i>
+<br>
+1E - Normal
+<br>
+19 - Luigi jumps
+<br>
+00 - float up as long as you hold the button.
+<br>
+I'm not sure what the next byte means but set it to whatever you put the running jumps as
+<br>
+Running:
+<i>Offset $3638(tsv) $3438(ntsv)</i>
+<br>
+28 - Normal
+<br>
+21 - Luigi jumps
+<br>
+00 - float up as long as you hold the button.
+</p>
+
+<p><b>Fun With Warp Zones</b>
+<br>
+<i>Note: Some values can give you strange but fun worlds. I'm not entirely sure how it works so you'll have to be a bit more careful here.</i>
+<br>
+<i>Offset $0A02(tsv) $0802(ntsv)</i>
+<br>
+Warp Zone 1
+<br>
+You'll notice three values on an unchanged ROM: 040302. If you picked up on it, these are the hex for the 4, 3, and 2 on the warp zone levels! Seems innocent enough? Nope! You can really screw up the warps zones with this! Try changing those values to anything at all! You can make a warp to the minus world (24 is a space, so it looks like just a minus) or to any other world with just a change of the hex value! Be warned: you can make plenty of screwball worlds with this!
+<br>
+<i>Offset $0A06(tsv) $0806(ntsv)</i>
+<br>
+Warp Zone 2
+<br>
+<i>Offset $0A0A(tsv) $080A(ntsv)</i>
+<br>
+Warp Zone 3
+</p>
+
+<p><b>My Theory About the Minus World</b>
+<br>
+For a better understanding about this you should read the hacking info about warp zones. We all know the little trick to get into the minus world, that infamous water level that goes on ad infinitum. You may not know the Science behind it, however. There are three pipes in the 1-2 Warp Zone. Those pipes were meant to be used by the first warp zone level selector. However, for reasons unknown, the little block trick loads the SECOND warp zone selector instead. That very warp zone set was meant for a warp zone with only a pipe in the middle! What about the other 2 pipes? They're there but they use the space so it looks like nothing has changed! Veeeeery sneaky of Nintendo! When there is a pipe under the "warp to number" (?), it goes to world ?-1. The "warp to number" is " " instead of a number like expected so it goes to " -1" which we just interpret as "-1", ignoring that little monster that gets us stuck in the endless pond. THAT, my friends, is reason for the minus world. It was an accident, really!
+</p>
+
+<p><font size=-1><i>Please note I'm not responsible if any of this screws up your ROM it's up to you to back it up. I haven't listed all the possiblilities her so feel free to explore. Some things work differently in conjunction with other stuff.  If something is wrong it's because of that. If you find anything good that I don't have here send them to me at <a href="mailto:darknight13@home.com">darknight13@home.com</a>. Some other things I would be especially grateful if people discovered are the speed if Mario, the movement properties of the Hammer Brothers' hammers, and the effects of mushrooms, stars, and fire flowers.</i></font></p>
+</td></tr></table>
+
+</body></html>

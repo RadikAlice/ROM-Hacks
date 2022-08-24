@@ -1,0 +1,1165 @@
+
+SMB MEMORY MAP
+--------------
+
+RAM Memory Locations ($0000-$07ff)
+----------------------------------
+$0000-$07     temporary variables, used by many subroutines
+$0008         sprite object offset
+$0009         frame counter, many possible uses
+$000a         saved joypad bits (A and B buttons)
+$000b         saved joypad bits (up and down buttons)
+$000c         saved joypad bits (left and right buttons)
+$000d         saved A and B buttons from previous frame
+$000e         number of subroutine to run in game engine on next frame
+$000f-$14     flag for enemy object data buffer and duplicate object offset holder
+$0016-$1b     enemy object identifier buffer 
+$001d         player state 
+$001e-$23     enemy object state 
+$0024-$25     fireball state
+$0026-$29     block object state
+$002a-$32     miscellaneous object state
+$0033         player facing direction
+$0034-$38     control variables used by firebars (all) or victory mode ($34-$35 only)
+$0039         power-up object type
+$003a-$3b     fireball bounce flags
+$003c-$40     hammer bro jump timers
+$0045         player moving direction
+$0046-$4b     enemy object moving/facing direction 
+$0057         player horizontal speed 
+$0058-$5d     enemy object horizontal speed or other movement attribute
+$005e-$5f     fireball horizontal speed
+$0060-$63     block object horizontal speed (used mainly by brick chunks)
+$0064-$6c     miscellaneous object horizontal speed
+$006d         player page location
+$006e-$73     enemy object page location
+$0074-$75     fireball page location
+$0076-$79     block object page location
+$007a-$82     miscellaneous object page location
+$0083-$85     air bubble page location
+$0086         player horizontal position 
+$0087-$8c     enemy object horizontal position
+$008d-$8e     fireball horizontal position
+$008f-$92     block object horizontal position
+$0093-$9b     miscellaneous object horizontal position
+$009c-$9e     air bubble horizontal position
+$009f         player vertical speed 
+$00a0-$a5     enemy object vertical speed or other movement attribute
+$00a6-$a7     fireball vertical speed
+$00a8-$ab     block object vertical speed
+$00ac-$b4     miscellaneous object vertical speed
+$00b5         player vertical position high byte
+$00b6-$bb     enemy object vertical position high byte
+$00bc-$bd     fireball vertical position high byte
+$00be-$c1     block object vertical position high byte
+$00c2-$ca     miscellaneous object vertical position high byte
+$00cb-$cd     air bubble vertical position high byte
+$00ce         player vertical position low byte
+$00cf-$d4     enemy object vertical position low byte
+$00d5-$d6     fireball vertical position low byte
+$00d7-$da     block object vertical position low byte
+$00db-$e3     miscellaneous object vertical position low byte
+$00e4-e6      air bubble vertical position low byte
+$00e7-e8      address to area's area object data
+$00e9-ea      address to area's enemy object data
+$00eb-ef      used as temporary variables
+$00f0         offset to note length lookup table
+$00f1         sfx buffer for square 1
+$00f2         sfx buffer for square 2
+$00f3         sfx buffer for noise
+$00f4         buffer for primary music (main level music)
+$00f5-f6      indirect for music data
+$00f7         offset for square 2 music data
+$00f8         offset for square 1 music data
+$00f9         offset for triangle music data
+$00fa         sfx queue for pause sfx
+$00fb         queue for primary music
+$00fc         queue for secondary music
+$00fd         sfx queue for noise
+$00fe         sfx queue for square 2
+$00ff         sfx queue for square 1
+$0109         vertical flip flag, used by enemy objects
+$010d         vertical coordinate used for floatey number w/ flagpole
+$010e         vertical movement force dummy variable used with $010d
+$010f         score offset used with flagpole to award points
+$0110-$0115   control for floatey numbers, used by enemy objects
+$0117-$011c   horizontal coordinate control for floatey numbers
+$011e-$0123   vertical coordinate control for floatey numbers
+$0125-$0129   shell chain counter, used to determine points given
+$012c-$0131   timer for floatey numbers
+$0133         dummy digit
+$0134-$0139   digit modifiers, used to increment or decrement digits
+$0200-$02ff   sprite object data written to sprite RAM in DMA
+$0300         vram buffer 1 current offset
+$0301-$033f   vram buffer 1, used mostly to write text
+$0340         vram buffer 2 current offset
+$0341-$035f   vram buffer 2, used mostly to write level graphics
+$0363         bowser's body controls (d7=mouth, d0=feet)
+$0364         used as counter to control bowser's feet
+$0365         bowser's movement speed
+$0366         bowser's original horizontal position
+$0367         bowser's flame timing control (used for frenzy)
+$0368         bowser's enemy object buffer offset (bowser's front)
+$0369         bridge collapse data offset
+$036a         bowser's graphics flag, used to draw front/rear
+$0398         vine height flag, used to determine height needed
+$0388         spinning speed of firebars
+$0399         vine height, used to determine current height
+$039a-$039b   vine object offsets to enemy buffer
+$039d         initial vine vertical coordinate of origin
+$03a0         balance platform alignment, used to conjoin two balance platforms
+$03a1         platform horizontal movement, used in player/platform collisions
+$03a2-$03a6   platform collision flags
+$03ad         player horizontal position relative to screen
+$03ae         enemy object horizontal position relative to screen
+$03af         fireball horizontal position relative to screen
+$03b0         air bubble horizontal position relative to screen
+$03b1-$03b2   block object horizontal position relative to screen
+$03b3         miscellaneous object horizontal position relative to screen
+$03b8         player vertical position relative to screen
+$03b9         enemy object vertical position relative to screen
+$03ba         fireball vertical position relative to screen
+$03bb         air bubble vertical position relative to screen
+$03bc-$03bd   block object vertical position relative to screen
+$03be         miscellaneous object vertical position relative to screen
+$03c4         player sprite attributes
+$03c5-$03ca   enemy object sprite attributes
+$03d0         offscreen control bits, used by player
+$03d1           ''         ''    '' , used by enemy objects
+$03d2           ''         ''    '' , used by fireballs
+$03d3           ''         ''    '' , used by air bubbles
+$03d4           ''         ''    '' , used by block objects
+$03d6           ''         ''    '' , used by misc objects
+$03d8-$03dd   offscreen masked control bits, used by enemy objects
+$03e4-$03e5   original vertical coordinate of block object
+$03e6-$03e7   block buffer address low byte used with block objects
+$03e8-$03e9   metatile backup data used to replace block object
+$03ea-$03eb   page location of block object used by other objects
+$03ec-$03ed   flags used by block objects to replace metatiles
+$03ee         control bit used to assign offsets
+$03f0         counter for number of block hits, residual variable
+$03f1-$03f2   block object original horizontal position
+$03f9-$03ff   attribute table buffer used to render attribute table
+$0400         player's horizontal movement force, used for fixed point math
+$0401         enemy object's horizontal movement force
+$0416         player's movement force dummy variable
+$0417-$041c   enemy object's movement force dummy variable
+$041d-$041e   fireball's movement force dummy variable
+$041f-$0422   block object's movement force dummy variable
+$0423-$042b   miscellaneous object's movement force dummy variable
+$042c-$042e   air bubble movement force dummy variable
+$0433         player's vertical movement force, used for fixed point math
+$0434-$0439   enemy object's vertical movement force
+$043a-$043b   fireball's vertical movement force
+$043c-$043f   block object's vertical movement force
+$0440-$0448   miscellaneous object's vertical movement force
+$0450         player's maximum left speed
+$0456         player's maximum right speed
+$046a         current offset for cannon or whirlpool
+$046b-$0470   page location of cannon or whirlpool
+$0471-$0476   horizontal coordinate of cannon or left extent of whirlpool
+$0477-$047c   vertical coordinate of cannon or length of whirlpool
+$047d-$0482   cannon timers or whirlpool flag ($047d only)
+$0483         bowser's hit points
+$0484         stomp chain counter, used to determine points given
+$0490         player collision bits
+$0491-$0495   enemy object collision bits
+$0499         player bounding box size control
+$049a-$049f   enemy object bounding box size control
+$04a0-$04a1   fireball bounding box size control
+$04a2-$04aa   miscellaneous object bounding box size control
+$04ac-$04af   player bounding box coordinates 
+$04b0-$04c7   enemy object bounding box coordinates
+$04c8-$04cf   fireball bounding box coordinates
+$04d0-$04f7   miscellaneous object bounding box coordinates
+$0500-$05cf   block buffer used for even-numbered pages
+$05d0-$069f   block buffer used for odd-numbered pages
+$06a0         column offset used by level data parser
+$06a1-$06ad   metatile buffer used to render name table graphics
+$06ae-$06b6   enemy offsets used in conjunction with hammers
+$06b7         miscellaneous object offset used with jumping coins
+$06bc         brick coin timer flag (not the timer itself)
+$06be-$06c6   miscellaneous object collision flag
+$06cb         enemy frenzy buffer, contents taken from enemy object buffer
+$06cc         game's secondary hard mode flag (activates on world 5-3 or hard game)
+$06cd         enemy frenzy queue, used by frenzy area objects
+$06ce         fireball counter, used to assign fireball offset
+$06cf         duplicate enemy object offset used with long firebar and bowser objects
+$06d1         timer used to delay lakitu's reappearance
+$06d3         number of enemies in group, used with enemy group objects $37-$3e
+$06d5         player graphics table offset
+$06d6         warp zone control
+$06d7         fireworks display counter
+$06d9         loop command multi-part counter for correct progression
+$06da         loop command multi-part counter for all progression
+$06db         jumpspring force
+$06dc         bowser's maximum range of horizontal movement from origin
+$06dd         bitmask filter used with swimming cheep-cheeps
+$06de         timer used to delay area changes
+$06e4         player OAM data offset
+$06e5-$06ea   enemy object OAM data offset
+$06ec-$06ed   block object OAM data offset, sometimes used for floatey numbers
+$06ee-$06f0   air bubble OAM data offset
+$06f1-$06f2   fireball OAM data offset
+$06f3-$06fb   miscellaneous object OAM data offset
+$06fc         player 1 joypad bits or master joypad bits
+$06fd         player 2 joypad bits
+$06ff         player's movement speed used to influence scroll
+$0700         player's walking/running speed, unsigned
+$0701         friction adder used to slow player down, whole portion 
+$0702         friction adder used to slow player down, fractional portion
+$0703         player's running speed/running flag
+$0704         swimming flag, affects player's physics
+$0705         fractional used for player's horizontal movement
+$0706         difference required to halt jumping force if A not pressed
+$0707         vertical high byte of origin of jump
+$0708         vertical coordinate of origin of jump
+$0709         vertical fractional movement force, used for jumping/falling
+$070a         vertical fractional movement force, used for falling
+$070b         player growing/shrinking flag
+$070c         animation frame timer setting (not the timer itself)
+$070d         player animation frame control
+$070e         jumpspring animation frame control
+$070f         vertical coordinate at time of player to flagpole collision
+$0710         starting position control bits from header
+$0711         fireball throwing timer
+$0712         used when player is killed to skip loading death music
+$0713         flagpole sound queue used to load flagpole slide sound
+$0714         player crouching flag
+$0715         game timer bits from header
+$0716         disable player collision detection flag
+$0717         current demo action
+$0718         current demo timer setting (not the timer itself)
+$0719         primary message counter used by victory mode
+$071a         page location of left edge of screen
+$071b         page location of right edge of screen
+$071c         horizontal position of left edge of screen
+$071d         horizontal position of right edge of screen
+$071e         number of columns to update, used by level data parser
+$071f         number of tasks to perform, used by level data parser
+$0720         current name table high used by level data parser
+$0721         current name table low used by level data parser
+$0722         sprite 0 check flag (sprite 0 used in rendering status bar)
+$0723         scroll lock flag
+$0725         current page number
+$0726         current column position
+$0727         terrain height control
+$0728         backloading flag used if player starts at other than beginning
+$0729         behind-renderer flag used if area objects behind renderer
+$072a         page control for area object data
+$072b         page select for area object data
+$072c         current offset for area object data
+$072d-2f      area object data offset buffer
+$0730-32      area object data offset buffer flag/length counter
+$0733         area object style (green ledge, mushroom, bullet bill)
+$0734         staircase control counter used in loading staircase data
+$0735         vertical length of object, used in rendering
+$0736         half-length of mushroom ledge used to position stem
+$0739         current offset for enemy object data
+$073a         page control for enemy object data
+$073b         page select for enemy object data
+$073c         task control for screen routines in title screen, game and game over modes
+$073d         horizontal scroll in 0-31 range, used to activate level data parser
+$073f         horizontal scroll in 0-255 range, used to set PPU scroll register
+$0740         vertical scroll used to set PPU scroll register (always zero)
+$0741         foreground scenery type (water, wall)
+$0742         background scenery type (trees, mountains, etc.)
+$0743         cloud terrain type override flag
+$0744         background color control
+$0745         loop command flag
+$0746         star flag task control used at end-of-level
+$0747         master timer control flag and counter
+$0748         hidden 1-up block coin tally (not stored in BCD)
+$0749         secondary message counter used in victory mode
+$074a         bitmask used to mask out joypad bits
+$074e         used to determine area type (water, ground, underground, castle)
+$074f         used to store offset used to find area address
+$0750         enemy data and area data pointer, 2 MSB used to set area type
+$0751         page number offset, used whenever area changes
+$0752         mode and flag for alternate entry into area
+$0753         player on the screen (0=mario, 1=luigi)
+$0754         player's size (0=big, 1=small)
+$0755         player's horizontal position on the screen, used by scroll routine
+$0756         player status (0=small, 1=super, 2=fiery)
+$0757         game timer loading control flag
+$0758         controller override bits
+$0759         game timer expiration flag (nonzero = game timer has expired)
+$075a         onscreen player's number of lives 
+$075b           ''       ''     halfway page number
+$075c           ''       ''     area number used to determine actual area number
+$075d           ''       ''     control flag for hidden 1-up blocks
+$075e           ''       ''     amount of coins player has (not stored in BCD)
+$075f           ''       ''     world number used by level loading routine, etc.
+$0760           ''       ''     area number used as offset to area address offset
+$0761         offscreen player's number of lives
+$0762           ''       ''     halfway page number
+$0763           ''       ''     area number used to determine actual area number
+$0764           ''       ''     control flag for hidden 1-up blocks
+$0765           ''       ''     amount of coins player has (not stored in BCD)
+$0766           ''       ''     world number used by level loading routine, etc.
+$0767           ''       ''     area number used as offset to area address offset
+$0768         fractional movement force used to influence scroll, used in victory mode
+$0769         skip intermediate lives display flag
+$076a         game's primary hard mode flag (controls enemies and secondary hard mode flag)
+$076b         used by world selection routine to select world number
+$0770         primary mode of operation (0=title screen, 1=game, 2=victory, 3=game over)
+$0772         secondary mode of operation (value here depends on contents of $0770)
+$0773         vram buffer address controller
+$0774         screen disable control (nonzero = screen off)
+$0775         actual scroll speed as returned by scroll routine
+$0776         game pause status
+$0777         game pause timer
+$0778         mirror of PPU control register 1 ($2000)
+$0779         mirror of PPU control register 2 ($2001)
+$077a         number of players (0=1 player, 1=2 players)
+$077f         interval timer control, influences all interval timers
+$0780         select button timer used for menu
+$0781         animation frame timer used to animate player
+$0782         jump/swim frame timer
+$0783         running timer
+$0784         block bounce frame timer
+$0785         side collision timer
+$0786         jumpspring timer
+$0787         game timer control, influences the game timer
+$0789         climbing side timer
+$078a-$078e   enemy object frame timers used by certain enemy objects
+$078f         enemy frenzy timer
+$0790         bowser flame timer
+$0791         stomp timer
+$0792         air bubble timer
+$0795         scroll interval timer
+$0796-$079b   enemy object interval timers
+$079d         brick coin timer
+$079e         injured invincibility timer
+$079f         star mario invincibility timer
+$07a0         screen timer, used to delay output to the screen
+$07a1         world change timer used in victory mode
+$07a2         demo timer
+$07a7-$07ad   linear feedback shift register, used to induce pseudorandomness
+$07b0         offset for noise music data
+$07b1         buffer for secondary music (event type music)
+$07b2         buffer for pause sfx
+$07b3         note length buffer for square 2
+$07b4         note length counter for square 2
+$07b5         envelope data control for square 2
+$07b6         note length counter for square 1
+$07b7         envelope data control for square 1
+$07b8         note length buffer for triangle
+$07b9         note length counter for triangle
+$07ba         beat length counter for noise
+$07bb         counter for length of square 1 sfx
+$07bd         counter for length of square 2 sfx
+$07be         secondary counter used by power-up/vinegrow sfx
+$07bf         counter for length of noise sfx
+$07c0         counter used for DAC, for some reason
+$07c1         original offset for noise music data, used for loopback
+$07c4         note length lookup table offset adder, used to speed up music
+$07c5         primary music buffer used while playing secondary music
+$07c6         pause mode flag used by sound engine
+$07c7         music header offset used for ground level music
+$07ca         alternate sound register content flag for square 1 reg $4001
+$07d7-$07dc   game's top score in BCD format
+$07dd-$07e2   player 1 (mario) score in BCD format
+$07e3-$07e8   player 2 (luigi) score in BCD format
+$07ed-$07ee   player 1 (mario) coin tally in BCD format
+$07f3-$07f4   player 2 (luigi) coin tally in BCD format
+$07f8-$07fa   game timer digits
+$07fc         game's world select enable flag (also affects hard mode flag)
+$07fd         previously saved world number used by continue function
+$07ff         warm boot flag validation
+
+PRG-ROM Locations ($8000-$ffff)
+-------------------------------
+$8000-$8059   startup initialization routine
+$805a-$807f   VRAM pointer look-up table used by VRAM rendering routine
+$8080-$8081   VRAM buffer offsets
+$8082-$8181   non-maskable interrupt routine (everything happens here)
+$8182-$81c5   pause handler
+$81c6-$8211   sprite shuffler
+$8212-$821f   operation mode root execution tree routine
+$8220-$8230   move all sprites offscreen (0-63 or 1-63)
+$8231-$823e   title screen mode execution tree routine
+$823f-$8244   world select buffer template (used to change world number)
+$8245-$831c   game menu handler
+$831d-$8324   game menu mushroom icon VRAM data
+$8325-$833f   game menu mushroom icon draw routine
+$8340-$8354   game demo action data
+$8355-$836a   game demo timing data
+$836b-$838a   game demo engine
+$838b-$839f   victory mode execution core
+$83a0-$83af   victory mode execution tree routine
+$83b0-$83bc   setup victory mode
+$83bd-$83f5   victory mode player autocontrol routine
+$83f6-$8460   victory mode message handler
+$8461-$849e   victory mode end-of-world handler
+$849f-$84b6   floatey number graphics data
+$84b7-$84c2   floatey number score data
+$84c3-$8566   floatey number handler (enemies)
+$8567-$858a   screen routines execution tree routine
+$858b-$859a   initialize screen
+$859b-$85ba   setup intermediate display
+$85bb-$85be   area palette VRAM pointer offsets
+$85bf-$85ca   area palette VRAM pointer routine
+$85cb-$85ce   background color control VRAM pointer offsets
+$85cf-$85d6   background colors by area type or background color control
+$85d7-$85e2   player object colors
+$85e3-$85f0   background color control VRAM pointer handler
+$85f1-$8642   player and background colors handler
+$8643-$8651   area style (mushroom platform) palette handler
+$8652-$8659   write top status bar line
+$865a-$8692   write bottom status bar line
+$8693-$86a7   time-up screen handler
+$86a8-$86e5   intermediate display handler
+$86e6-$86fe   area data parser task control engine
+$86ff-$8731   title screen handler
+$8732-$8748   VRAM data clean-up routine (also draws mushroom icon)
+$8749-$8751   write top score to title screen
+$8752-$8778   game text (top status bar line)
+$8779-$8797   game text (world/lives display)
+$8798-$87aa   game text (time-up display)
+$87ab-$87bf   game text (game over display)
+$87c0-$87ec   game text (warp zone message and number placeholders)
+$87ed-$87f1   game text (luigi)
+$87f2-$87fd   game text (warp zone numbers)
+$87fe-$8807   game text offsets
+$8808-$889c   game text routine (handles all except victory messages)
+$889d-$88ad   reset sprites and screen timer routine
+$88ae-$8969   metatile buffer renderer for area graphics
+$896a-$89c2   attribute table renderer for area graphics
+$89c3-$89c8   color rotation palette (the colors in sequence)
+$89ca-$89d0   blank palette template
+$89d1-$89e0   area type palettes for VRAM BG palette 3
+$89e1-$8a38   color rotation handler
+$8a39-$8a4c   replacement metatile graphics table used with block objects
+$8a4d-$8a60   remove coin/axe routine
+$8a61-$8b07   metatile removal/replacement routines
+$8b08-$8b0f   metatile graphics table offsets
+$8b10-$8ca3   metatile graphics table
+$8ca4-$8cc7   water area palette data
+$8cc8-$8ceb   ground area palette data
+$8cec-$8d0f   underground area palette data
+$8d10-$8d33   castle area palette data (also used for bg color control 7)
+$8d34-$8d3b   bg color control 4 palette (day/snow)
+$8d3c-$8d43   bg color control 5 palette (night/snow)
+$8d44-$8d4b   area style 1 palette (mushroom)
+$8d4c-$8d53   bowser palette
+$8d54-$8d67   victory message for mario
+$8d68-$8d7b   victory message for luigi
+$8d7c-$8da7   mushroom retainer message
+$8da8-$8dbe   princess message part 1
+$8dbf-$8ddd   princess message part 2
+$8dde-$8dee   world select message part 1
+$8def-$8e03   world select message part 2
+$8e04-$8e18   jump engine
+$8e19-$8e5b   init name tables routine
+$8e5c-$8e91   read joypads
+$8e92-$8eec   VRAM buffer contents handler
+$8eed-$8ef3   update PPU control register 1 routine
+$8ef4-$8eff   status bar numbers data (positions and numbers of digits)
+$8f00-$8f05   status bar numbers memory offsets
+$8f06-$8f5e   status bar number display routine
+$8f5f-$8f96   math routine used to update timer, score and coin digits
+$8f97-$8fbc   top score update handler
+$8fbc-$8fce   default sprite object offsets in sprite data
+$8fcf-$9060   initialize game and area routine
+$9061-$90cb   setup game routine
+$90cc-$90e6   initialize CPU RAM
+$90e7-$90ec   area music selection data (tells what music to play)
+$90ed-$9115   select area music
+$9116-$912d   player entrance position and bg priority data
+$912e-$9130   game timer data used with entrance setup
+$9131-$91bc   setup player entrance and game timer
+$91bd-$91cc   halfway page nybbles data
+$91cd-$9217   lose player's life handler
+$9218-$9223   game over mode execution tree routine
+$9224-$9236   setup game over routine
+$9237-$9263   game over handler
+$9264-$92a9   continue game routines used when player loses life
+$92aa-$92af   residual
+$92b0-$92da   area parser task handler
+$92db-$92f6   increment area parser column position
+$92f7-$92f9   offsets to background scenery data
+$92fa-$9389   background scenery data
+$938a-$93ad   background scenery metatile data
+$93ae-$93b0   offsets to foreground scenery data
+$93b1-$93d7   foreground scenery data
+$93d8-$93db   terrain metatile data
+$93dc-$93fb   terrain rendering control bits
+$93fc-$9401   area parser core
+$9404-$9503   background scenery/foreground scenery/terrain handler
+$9504-$9507   block buffer lower bounds data
+$9508-$96c4   area data loader and handler
+$96c5-$96f1   alter area attributes area object handler
+$96f2-$9715   scroll lock object/warp zone scroll lock object handlers
+$9716-$9727   kill enemies handler (used to remove specific enemy IDs)
+$9728-$973f   enemy frenzy area objects handler
+$9740-$97b6   area style object handler
+$97b7-$97b9   pulley/rope object metatile data
+$97ba-$97ce   pulley/rope object handler
+$97cf-$9805   castle object metatile data
+$9806-$986e   castle object handler
+$986f-$9881   water pipe object handler
+$9882-$989e   intro pipe object handler
+$989f-$98aa   sideways pipe control and metatile data
+$98ab-$98b2   exit pipe object handler
+$98b3-$98dc   sideways pipe render routine used for intro and exit pipe objects
+$98dd-$98e4   vertical pipe metatile data
+$98e5-$9949   vertical pipe object handler
+$994a-$9956   empty enemy object buffer slot detection routine
+$9957-$9965   hole with water object handler
+$9968-$9978   question block row objects handler
+$9979-$9993   bridge object handler
+$9994-$999d   residual flag balls object code
+$999e-$99cf   flagpole object handler
+$99d0-$99d6   endless rope object handler
+$99d7-$99ed   platform balance rope object handler
+$99ee-$99f1   coin metatile data used with coin row object
+$99f2-$99fa   coin row object handler
+$99fb-$99fd   castle-related objects position data
+$99fe-$9a00   castle-related objects metatile data
+$9a01-$9a08   bowser's bridge object handler
+$9a09-$9a0d   axe object handler
+$9a0e-$9a18   chain object handler
+$9a19-$9a24   empty block object handler
+$9a25-$9a28   solid block row/column objects metatile data
+$9a29-$9a2d   brick row/column objects metatile data ($9a2d used for row object only)
+$9a2e-$9a3d   brick row object handler
+$9a3e-$9a4f   solid block row object handler
+$9a50-$9a58   brick column object handler
+$9a59-$9a68   solid block column object handler
+$9a69-$9aa4   bullet bill cannon setup code used with area style object handler
+$9aa5-$9aad   staircase object height data
+$9aae-$9ab6   staircase object starting row data
+$9ab7-$9ad2   staircase object handler
+$9ad3-$9b00   jumpspring object handler
+$9b01-$9b0d   hidden 1-up block object handler
+$9b0e-$9b13   question block object handler
+$9b14-$9b18   brick with coins object handler
+$9b19-$9b35   brick with items object handler (also used by other related objects)
+$9b36-$9b3c   get area object ID routine used with question block and brick objects
+$9b3d-$9b40   hole object metatile data
+$9b41-$9b7c   hole object handler
+$9b7d-$9bab   tall area object renderer routine (used with object taller than 1 row)
+$9bac-$9bba   large object length processor routine
+$9bbb-$9bca   get large object attribute routine
+$9bcb-$9bd2   get area object pixel X position
+$9bd3-$9bdc   get area object pixel Y position
+$9bdd-$9be0   block buffer address data
+$9be1-$9bf5   get block buffer address routine
+$9bf6-$9bf7   unused
+$9bf8-$9c02   area object data offsets used in loop command processing
+$9c03-$9c12   load area and enemy objects data address pointer and area type
+$9c13-$9c21   get area and enemy objects data address pointer (based on current world and area numbers)
+$9c22-$9cb3   area and enemy objects data address loader and area object data header process routine
+$9cb4-$9cbb   offsets to levels' area and enemy objects data address pointer table, based on world number
+$9cbc-$9cdf   levels' area and enemy objects data address pointer table
+$9ce0-$9ce3   enemy object data address table offsets, based on area type
+$9ce4-$9d05   enemy object data address table low
+$9d06-$9d27   enemy object data address table high
+$9d28-$9d2b   area object data address table offsets, based on area type
+$9d2c-$9d4d   area object data address table low
+$9d4e-$9d6f   area object data address table high
+$9d70-$a1ae   enemy object data
+$a1af-$aeda   area object data
+$aedb         unused
+$aedc-$aee9   game mode execution tree routine
+$aeea-$aefd   game engine checkpoint routine (decides if the game engine gets run or not)
+$aefe-$af92   game engine core (this is the actual game proper)
+$af93-$b033   scroll handler
+$b034-$b037   offscreen subtracter and joypad bits data used with scroll handler
+$b038-$b049   get screen position
+$b04a-$b068   game engine subroutine execution tree routine
+$b069-$b0e5   player entrance handler
+$b0e6-$b1c6   player control handler
+$b1c7-$b1e4   vine autoclimb handler
+$b1e5-$b205   vertical pipe entry handler
+$b206-$b232   sideways pipe entry handler
+$b233-$b244   player change timer control handler
+$b245-$b254   player injury blink timer control handler
+$b255-$b268   player size inversion routine
+$b269-$b271   player death timer control handler
+$b273-$b27c   reset game engine subroutine select handler
+$b27d-$b287   fire flower get timer control handler
+$b288-$b2a2   player palette cycle routine used for fire flower and star get
+$b2a3         subroutine return point used by player death timer control handler
+$b2a4-$b2c1   flagpole slide initialize handler
+$b2c2-$b2c9   hidden 1-up block coin amounts based on world number
+$b2ca-$b328   end level handler
+$b329-$b359   player movement subroutine core handler
+$b35a-$b36c   player on ground movement subroutine
+$b36d-$b375   player falling movement subroutine
+$b376-$b3c6   player jumping/swimming movement subroutine
+$b3c7-$b3ce   player climbing position adders low and high
+$b3cf-$b423   player climbing movement subroutine
+$b424-$b44f   player movement physics-related data
+$b450-$b58b   player movement physics routine
+$b58c-$b58e   player animation timing data
+$b58f-$b5cb   player animation timing handler
+$b5cc-$b623   impose friction on player movement routine
+$b624-$b686   fireball and air bubble objects engine core
+$b687-$b688   fireball object X speed data
+$b689-$b6f8   fireball object processing routine
+$b6f9-$b74a   air bubble object checkpoint and setup routines
+$b74b-$b74c   air bubble object movement force data
+$b74d-$b74e   air bubble object timing data
+$b74f-$b7a3   run game timer routine
+$b7a4-$b7b7   warp zone object run routine
+$b7b8-$b84a   whirlpool engine core
+$b84b-$b854   flagpole score data
+$b855-$b8b5   flagpole engine core
+$b8b6-$b8b9   jumpspring positioning data
+$b8ba-$b91d   jumpspring engine core
+$b91e-$b948   vine object setup routine
+$b949-$b94a   vine object height data
+$b94b-$b9b9   vine object run routine
+$b9ba-$b9bb   bitmasks used with cannons
+$b9bc-$ba30   bullet bill cannons engine core
+$ba31-$ba32   bullet bill speed data used with cannons
+$ba33-$ba88   bullet bill object handler used with cannons
+$ba89-$ba91   enemy offset data used with hammer objects to compare with hammer bro and bowser
+$ba92-$ba93   hammer object X speed data
+$ba94-$bac2   hammer object setup routine
+$bac3-$bb37   hammer object processing routine
+$bb38-$bb50   coin block handler used with block bump handler routine
+$bb51-$bb83   jumping coin object setup routine
+$bb84-$bb95   empty misc object buffer slot detection routine
+$bb96-$bba6   misc objects engine core
+$bba7-$bbf7   jumping coin processing routine
+$bbf8-$bbf9   coin tally display offsets used to update coin display
+$bbfa-$bbfb   score display offsets used to update score
+$bbfc-$bbfd   status bar nybbles used by status bar number display routine
+$bbfe-$bc21   increment coin tallies routine used to award coin
+$bc22-$bc26   setup score for getting coin
+$bc27-$bc2f   award points to score of player routine
+$bc30-$bc35   routine used to get status bar nybbles based on player
+$bc36-$bc48   update status bar number routine (also performs zero suppression)
+$bc49-$bc84   power-up object setup routine
+$bc85-$bcea   power-up object run routine
+$bceb-$bcec   block buffer Y position adder data
+$bced-$bd83   player's background-to-head collision handling routine
+$bd84-$bd9a   init block object position
+$bd9b-$bdd1   block bump handler routine
+$bdd2-$bde7   block with item handler used with block bump handler routine
+$bde8-$bdf5   brick and block metatile data
+$bdf6-$be01   block bump metatile checking routine
+$be02-$be1e   brick shatter handler routine
+$be1f-$be40   coin on top of block detection routine
+$be41-$be6f   brick chunks object setup routine
+$be70-$beb1   block objects core (also run routine for brick chunks)
+$beb2-$bed3   bouncing block object run routine
+$bed4-$bf01   check to replace block object with metatile routine
+$bf02-$bf08   move enemy horizontally routine
+$bf09-$bf0e   move player horizontally routine
+$bf0f-$bf4c   move sprite object horizontally core routine
+$bf4d-$bf62   move enemy vertically routine
+$bf63-$bf6a   move defeated enemy or spiny's egg vertically routine
+$bf6b-$bf6f   move falling platform routine
+$bf70-$bf87   move red paratroopa routine
+$bf88-$bf8b   move drop platform routine
+$bf8c-$bf91   move enemy slowly vertically routine
+$bf92-$bf9e   move jumping or flying enemy vertically routine
+$bf9f-$bfa0   maximum speed data for block objects
+$bfa1-$bfa3   residual
+$bfa4-$bfac   impose gravity on block objects
+$bfad-$bfb3   impose gravity on all other sprite objects
+$bfb4-$bfd0   move platforms up or down routine
+$bfd1-$bfd6   impose gravity on red paratroopa
+$bfd7-$c046   impose gravity core routine (used by all sprite objects affected)
+$c047-$c06a   enemies and loop commands core routine
+$c06b-$c075   loop command world number data
+$c076-$c080   loop command page number data
+$c081-$c08b   loop command Y position data
+$c08c-$c0cb   game level loopback handler (this makes the looping happen)
+$c0cc-$c12e   loop command processing core
+$c12f-$c143   enemy frenzy queue handler
+$c144-$c215   enemy data loader and handler
+$c216-$c225   enemy frenzy buffer handler
+$c226-$c22d   enemy object state init routine
+$c22e-$c230   group enemy objects jump point
+$c231-$c24f   parser of area change objects
+$c250-$c26b   increment enemy data offset routine
+$c26c-$c27e   process enemy ID for positioning handler
+$c27f-$c2ef   enemy init routines jump and jump table
+$c2f0         used by enemy IDs that have no init code
+$c2f1-$c2f6   goomba init routine
+$c2f7-$c306   podoboo init routine
+$c307-$c30b   princess/mushroom retainer init routine
+$c30c-$c30d   normal enemy object X speed data
+$c30e-$c31d   normal enemy object init routine
+$c31e-$c325   red koopa init routine
+$c326-$c327   hammer bro walking timer data
+$c328-$c33c   hammer bro init routine
+$c33d-$c341   init routine used by green paratroopa $10 and lakitu
+$c342-$c349   bloober init routine
+$c34a-$c36a   red paratroopa init routine
+$c36b-$c374   bullet bill init routine
+$c375-$c384   cheep-cheep init routine
+$c385-$c394   lakitu init routine
+$c395-$c397   kill lakitu routine
+$c398-$c3a3   pseudorandom difference adjuster data used for spiny's egg
+$c3a4-$c3e5   lakitu and spiny spawning handler
+$c3e6-$c44e   spiny spawning routine
+$c44f-$c453   firebar spinning speed data
+$c454-$c458   firebar spinning direction data
+$c459-$c487   firebar init routine
+$c488-$c497   flying cheep-cheep X position data
+$c498-$c4a3   flying cheep-cheep X speed data
+$c4a4-$c548   flying cheep-cheep init routine
+$c549-$c574   bowser init routine
+$c575-$c59c   duplicate enemy object spawn routine
+$c59d-$c5a0   bowser flame Y position data
+$c5a1-$c5a2   bowser flame Y movement force data
+$c5a3-$c630   bowser flame init routine
+$c631-$c636   fireworks display X position data
+$c637-$c63c   fireworks display Y position data
+$c63d-$c689   fireworks init routine (used for each one)
+$c68a-$c691   bitmasks
+$c692-$c699   bullet bill/cheep-cheep Y position data
+$c69a-$c69b   swimming cheep-cheep enemy ID data
+$c69c-$c71a   bullet bill/cheep-cheep init routine
+$c71b-$c786   enemy group objects handler
+$c787-$c79f   piranha plant init routine
+$c7a0-$c7b6   enemy frenzy objects handler
+$c7b7         return point used by nonexistent object $13
+$c7b8-$c7d0   end enemy frenzy handler
+$c7d1-$c7de   green paratroopa $0e init routine
+$c7df-$c802   balance platform init routine
+$c803-$c80a   drop platform init routine
+$c80b-$c811   horizontal platform init routine
+$c812-$c827   vertical platform init routine
+$c828-$c83e   common platform code
+$c83f-$c84a   large lift platform routines
+$c84b-$c86a   lift platform movement setup code used by large and small platforms
+$c86b-$c86d   platform X position adder data low
+$c86e-$c870   platform X position adder data high
+$c871-$c880   position platform routine used by lift and balance platforms
+$c881         end of enemy object init routines
+$c882-$c8d5   enemy run routines jump and jump table
+$c8d6         used by enemy IDs that have no run code
+$c8d7-$c8df   princess/mushroom retainer run routine
+$c8e0-$c904   enemy run routine used by enemy objects $00-$14
+$c905-$c933   enemy movement routines jump and jump table
+$c934-$c946   bowser flame run routine
+$c947-$c94c   firebar objects run routine
+$c94d-$c964   small platforms run routine
+$c965-$c981   large platforms run routine
+$c982-$c997   large platforms movement routines jump and jump table
+$c998-$c9af   erase enemy object
+$c9b0-$c9cd   podoboo movement routine
+$c9ce-$c9cf   hammer throwing timer data
+$c9d0-$c9d3   shelled enemy object X speed data
+$c9d4-$c9d7   revived enemy object X speed data
+$c9d8-$ca0f   hammer bro movement routine 
+$ca10-$ca11   hammer bro jump length data
+$ca12-$ca57   hammer bro jump routine
+$ca58-$ca76   hammer bro X movement routine
+$ca77-$cac7   movement routine used by koopas and goombas
+$cac8-$cae4   revived stunned shell enemy routine
+$cae5-$caea   defeated enemy movement routine
+$caeb-$caf8   defeated goomba check handler
+$caf9-$cafe   jumping enemy object movement routine (used by green paratroopa $0e and star power-up)
+$caff-$cb24   red paratroopa movement routine
+$cb25-$cb44   green paratroopa $10 movement routine
+$cb45-$cb65   green paratroopa $10 and horizontal platform movement centering routine
+$cb66-$cb86   movement routine used by both green paratroopa $10 and horizontal platform
+$cb87-$cb88   bitmasks used with bloober
+$cb89-$cc35   bloober movement routines
+$cc36-$cc45   bullet bill movement routines
+$cc46-$cc49   swimming cheep-cheep movement data
+$cc4a-$ccc6   swimming cheep-cheep movement routines
+$ccc7-$cd29   firebar oscillating position look-up table
+$cd2a-$cd2d   firebar mirroring data
+$cd2e-$cd39   firebar position look-up table offsets
+$cd3a-$cd3b   firebar Y position data (used for collision detection)
+$cd3c-$cdba   firebar handler core
+$cdbb-$ce8d   firebar handler setup to draw, and collision detection handler
+$ce8e-$ced4   firebar oscillating position handler
+$ced5-$ced9   pseudorandom subtracter data used with flying cheep-cheeps
+$ceda-$cede   background priority data used with flying cheep-cheeps
+$cedf-$cf24   flying cheep-cheep movement routine
+$cf25-$cf27   lakitu difference adjusters used in movement routine
+$cf28-$cf6b   lakitu movement routine
+$cf6c-$cfdc   lakitu-to-player difference handler
+$cfdd-$cfeb   bridge collapse metatile removal position data
+$cfec-$d060   bridge collapse handler (also deals with bowser)
+$d061-$d064   pseudorandom range data used with bowser
+$d065-$d070   bowser run routine
+$d071-$d07e   kill all enemies routine
+$d07f-$d17a   bowser behavior core
+$d17b-$d1bb   bowser graphics handler
+$d1bc-$d1d0   bowser object misc tasks routine
+$d1d1-$d1d8   bowser flame timing data
+$d1d9-$d1ea   set bowser flame timer routine
+$d1eb-$d294   bowser flame movement routine and graphics handler
+$d295-$d2cc   fireworks run routine
+$d2cd-$d2d0   star flag Y position data
+$d2d1-$d2d4   star flag X position data
+$d2d5-$d2d8   star flag graphics data
+$d2d9-$d2f1   star flag run routines and jump table
+$d2f2-$d30d   game timer check for fireworks routine
+$d30e-$d310   increment star flag task control
+$d311         exit from star flag routines
+$d312-$d34d   award game timer points (also used to award fireworks points)
+$d34e-$d395   raise and draw star flag/start fireworks routine
+$d396-$d3a1   draw star flag and set timer
+$d3a2-$d3af   area change delay routine used by star flag object
+$d3b0-$d40f   piranha plant movement routine
+$d410-$d431   firebar spin routine
+$d432-$d5d2   balance platform movement routines (handles everything including rope)
+$d5d3-$d606   vertical platform movement routines
+$d607-$d630   horizontal platform movement routines
+$d631-$d63c   drop platform movement routine
+$d63d-$d64e   right-moving platform movement routine
+$d64f-$d654   large lift platforms movement routine
+$d655-$d65a   small platforms movement routine
+$d65b-$d670   common code to all lift platforms
+$d671-$d679   small platform collision detection
+$d67a-$d6d5   offscreen bounds check used by sprite objects
+$d6d6-$d6d8   unused
+$d6d9-$d735   fireball to enemy collision detection
+$d736-$d73d   enemy IDs used for defeated bowser
+$d73e-$d794   fireball to enemy collision handler
+$d795-$d7c3   defeated enemy code used when enemies hit by fireball, shell, or from underneath
+$d7c4-$d7ff   player to hammer collision detection
+$d800-$d84c   player to power-up collision handlers
+$d84d-$d84e   residual
+$d84f-$d850   kicked shell X speed data
+$d851-$d852   X speed data used for demoted koopas
+$d853-$d891   player to enemy/power-up collision detection
+$d892-$d894   kicked shell points data
+$d895-$d8f8   player to enemy collision handler
+$d8f9-$d92b   check to injure player routine
+$d92c-$d964   injure or kill player routine
+$d965-$d968   stomped enemy points data
+$d969-$d9d1   stomped enemy handler
+$d9d2-$d9d3   shelled enemy revival timing data
+$d9d4-$d9f5   stomped shell enemy handler
+$d9f6-$da10   enemy facing direction routines
+$da11-$da24   floatey number setup routine used for enemies
+$da25-$da2b   bitmasks used to set bits
+$da2c-$da32   bitmasks used to clear bits
+$da33-$dab3   enemies collision detection
+$dab4-$daf0   enemies collision handler used for first enemy
+$daf1-$db44   enemies collision handler used for second enemy
+$db45-$db7a   player to large platform collision detection
+$db7b-$dbb9   player to small platform collision detection
+$dbba-$dc16   player to platforms collision handler
+$dc17-$dc18   player positioning data used with platforms
+$dc19-$dc40   player position on platform routines
+$dc41-$dc51   check player's vertical position routine
+$dc52-$dc61   get enemy bounding box offset routine
+$dc62-$dc63   player vertical position upper extent data
+$dc64-$ddfe   player to background collision detection and handler
+$ddff-$de02   stop player movement
+$de03-$de04   area change timing data
+$de05-$de24   metatile removal and game code for coin and axe metatiles
+$de25-$de26   climbing X position adder data
+$de27-$de28   climbing page location adder data
+$de29-$de2d   flagpole Y positions data (used to determine points)
+$de2e-$de40   flagpole/vine collision detection and handler core
+$de41-$de79   flagpole collision handler
+$de7a-$debc   vine collision handler
+$debd-$dec3   invisible metatiles check routine
+$dec4-$dee7   jumpspring collision detection and handler
+$dee8-$df4a   pipe entry handler used when going into pipes
+$df4b-$df8a   impede player's movement routine
+$df8b-$df8e   upper extent data for solid metatiles
+$df8f-$df95   check for solid metatiles routine
+$df96-$df99   upper extent data for climbing metatiles
+$df9a-$dfa0   check for climbing metatiles routine
+$dfa1-$dfaf   check for coin metatiles routine
+$dfb0-$dfb8   get metatile attribute routine
+$dfb9-$dfbe   state data used with enemy to bg collision detection
+$dfbf-$dfc0   X speed data used with enemy to bg collision detection
+$dfc1-$dff7   enemy to background collision detection
+$dff8-$e066   enemy to background collision handler
+$e067-$e0e1   enemy landing state and facing direction handler
+$e0e2-$e0fd   red koopa handler (check to see if needs to turn around)
+$e0fe-$e123   enemy side collision detection
+$e124-$e142   enemy side collision handler
+$e143-$e14e   get X position difference between player and enemy objects
+$e14f-$e15a   enemy landing effectuator
+$e15b-$e162   enemy subtract position routine used in enemy jump routine
+$e163-$e184   enemy jump routine
+$e185-$e1ad   hammer bro to background collision detection
+$e1ae-$e1b4   check under enemy routine
+$e1b5-$e1c7   check for non-solid metatiles routine
+$e1c8-$e1fc   fireball to background collision detection and handler
+$e1fd-$e22c   bounding box control data
+$e22d-$e235   setup fireball object bounding box
+$e236-$e242   setup misc object bounding box
+$e243-$e24b   setup enemy object bounding box
+$e24c-$e251   setup small platform bounding box
+$e252-$e272   get masked offscreen bits for enemy object bounding box
+$e273-$e27b   setup large platform bounding box
+$e27c-$e288   setup offset for enemy object bounding box
+$e289-$e29b   move enemy object bounding box offscreen routine
+$e29c-$e2dd   bounding box core routine
+$e2de-$e324   check bounding box for offscreen positions routine
+$e325-$e326   jump to use player as object for sprite object collision detection core
+$e327-$e387   sprite object collision detection core routine
+$e388-$e391   block buffer check for enemies
+$e392-$e39b   residual, probably once block buffer check for misc objects
+$e39c-$e3ac   block buffer check for fireballs
+$e3ad-$e3af   block buffer adder data used by player object for head and feet checks
+$e3b0-$e3cb   block buffer X position adder data
+$e3cc-$e3e7   block buffer Y position adder data
+$e3e8-$e3ef   block buffer collision jumps used by player object
+$e3f0-$e431   block buffer collision core used to do sprite object to bg collision detection
+$e432         unused
+$e433-$e434   vine Y position adder data
+$e435-$e4ad   vine graphics handler
+$e4ae-$e4bf   six-sprite stacker used with vines and platforms
+$e4c0-$e4c7   first sprite X and Y positions data used with hammers
+$e4c8-$e4cf   second sprite X and Y positions data used with hammers
+$e4d0-$e4d7   first and second sprite graphics data used with hammers
+$e4d8-$e4db   hammer sprite attribute data
+$e4dc-$e540   hammer graphics handler
+$e541-$e54a   floatey number graphics data used with flagpole
+$e54b-$e5b2   flagpole and floatey number graphics handler
+$e5b3-$e5b4   jump used to set offscreen coordinate and prepare to dump
+$e5b5-$e5c7   jumps used to dump value into sprite data
+$e5c8-$e654   large platform graphics handler
+$e655-$e681   floatey number graphics handler used with jumping coin
+$e682-$e685   jumping coin graphics data
+$e686-$e6bd   jumping coin graphics handler
+$e6be-$e6cd   power-up graphics data
+$e6ce-$e6d1   power-up attribute data
+$e6d2-$e73d   power-up graphics handler
+$e73e-$e83f   enemy graphics table
+$e840-$e85a   enemy graphics table offsets based on enemy ID number
+$e85b-$e875   enemy attribute data
+$e876-$e877   enemy animation timing data
+$e878-$e87c   jumpspring frame offsets
+$e87d-$eba9   enemy graphics handler
+$ebaa-$ebb1   draw enemy object row
+$ebb2-$ebb6   draw sprite object row
+$ebb7-$ebc0   move sprite row offscreen
+$ebc1-$ebcc   move sprite column offscreen
+$ebcd-$ebd0   default block object graphics data
+$ebd1-$ec52   block object graphics handler
+$ec53-$ecdd   brick chunks graphics handler used with block object graphics handler
+$ecde-$ed05   fireball and firebar graphics handlers
+$ed06-$ed08   explosion graphics data used with fireballs and fireworks
+$ed09-$ed16   fireball explosion handler (decides whether or not to draw explosion)
+$ed17-$ed60   explosion graphics handler
+$ed61-$ed65   kill fireball rotine
+$ed66-$ede0   small platform graphics handler
+$ede1-$ee06   air bubble graphics handler
+$ee07-$ee16   player graphics table offsets
+$ee17-$eee6   player graphics table
+$eee7-$eee8   swim kick tile number data used for swimming
+$eee9-$ef9d   player graphics handler core
+$ef9e-$efa3   sprite data used to render player on intermediate displays
+$efa4-$efbd   render player on intermediate display routine
+$efbe-$efeb   draw player routine
+$efec-$f09b   process player actions for draw player routine
+$f09c-$f0af   player change size graphics offset adder data
+$f0b0-$f0e8   player change size handler
+$f0e9-$f129   handle player sprite flipping as necessary routine
+$f12a-$f130   get player's relative position
+$f131-$f13a   get air bubble's relative position
+$f13b-$f147   get fireball's relative position
+$f148-$f151   get misc object's relative position
+$f152-$f158   get enemy's relative position
+$f159-$f164   get block object's relative position
+$f165-$f170   get relative position of object with variable offset in mind
+$f171-$f17f   get sprite object relative position core
+$f180-$f186   get player's offscreen bits
+$f187-$f190   get fireball's offscreen bits
+$f191-$f19a   get air bubble's offscreen bits
+$f19b-$f1a4   get misc object's offscreen bits
+$f1a5-$f1a7   object offset data used for fireballs, air bubbles, and misc objects
+$f1a8-$f1ae   get proper object offset to be used for offscreen bits
+$f1af-$f1b5   get enemy's offscreen bits
+$f1b6-$f1b9   get block object's offscreen bits
+$f1ba-$f1bf   set offset to offscreen bits for type of sprite object
+$f1c0-$f1d6   get offscreen bits core with current offset
+$f1d7-$f1e2   run offscreen bits routines
+$f1e3-$f1f2   X offscreen bits data
+$f1f3-$f1f5   default X onscreen bits offsets
+$f1f6-$f22a   get X offscreen bits core
+$f22b-$f233   Y offscreen bits data
+$f234-$f236   default Y onscreen bits offsets
+$f237-$f238   vertical high byte position unit data
+$f239-$f26c   get Y offscreen bits core
+$f26d-$f281   divide pixel difference routine used by offscreen bits core routines
+$f282-$f2c9   draw sprite object core routine (used by most objects)
+$f2ca-$f2cf   unused
+$f2d0-$f380   sound core routine
+$f381-$f3b0   jumps to dump sound registers
+$f3b1-$f3be   swim/stomp sound envelope data
+$f3bf-$f4d3   square 1 sound effects handler
+$f4d4-$f4d9   extra life sound frequency data
+$f4da-$f4f7   power-up grab sound frequency data
+$f4f8-$f517   power-up/vine grow sound frequency data
+$f518-$f62a   square 2 sound effects handler
+$f62b-$f63a   brick shatter frequency data
+$f63b-$f690   noise sound effects handler
+$f691-$f739   music handler core
+$f73a-$f7bb   square 2 music handler
+$f7bc-$f819   square 1 music handler
+$f81a-$f86c   triangle music handler
+$f86d-$f8c4   noise music handler
+$f8c5-$f8d7   note and beat length handler (part of this does alternate format)
+$f8d8-$f8f3   load control register routine used with music handler core
+$f8f4-$f90c   load envelope data routines used depending on music
+$f90d-$f93d   music header data offsets
+$f93e-$f9b7   music header data
+$f9b8-$fefc   music data
+$fefd-$feff   unused
+$ff00-$ff65   music frequency register look-up table
+$ff66-$ff96   music length look-up table
+$ff97-$ffc9   music envelope data
+$ffca-$ffe9   bowser flame envelope data
+$ffea-$fff9   brick shatter envelope data
+$fffa-$ffff   vectors used by processor
+
+CHR-ROM Locations ($0000-$1fff)
+-------------------------------
+$0000-$030f ($00-$30)  big player
+$0310-$031f ($31)      alternate swim tile used by big player
+$0320-$045f ($32-$45)  small player
+$0460-$046f ($46)      alternate swim tile used by small player
+$0470-$049f ($47-$49)  small player
+$04a0-$04ff ($4a-$4f)  standing/changing size, used by both players
+$0500-$050f ($50)      "00"
+$0510-$053f ($51-$53)  bowser flame
+$0540-$057f ($54-$57)  star flag
+$0580-$05af ($58-$5a)  crouching, used by big player
+$05b0-$05bf ($5b)      platform, used on all except cloud-type levels
+$05c0-$05ff ($5c-$5f)  climbing, used by big player
+$0600-$063f ($60-$63)  jumping coin
+$0640-$065f ($64-$65)  fireball/firebar
+$0660-$068f ($66-$68)  explosion
+$0690-$06cf ($69-$6c)  koopa paratroopa
+$06d0-$06ff ($6d-$6f)  shelled koopa
+$0700-$073f ($70-$73)  goomba
+$0740-$074f ($74)      air bubble
+$0750-$075f ($75)      platform, used on cloud-type levels
+$0760-$079f ($76-$79)  mushroom power-up
+$07a0-$07bf ($7a-$7b)  princess (head)
+$07c0-$07df ($7c-$7d)  hammer bro (head)
+$07e0-$07ff ($7e-$7f)  flagpole flag
+$0800-$083f ($80-$83)  hammer
+$0840-$084f ($84)      brick chunk
+$0850-$086f ($85-$86)  brick (used by block object)
+$0870-$087f ($87)      empty block (used by block object)
+$0880-$08cf ($88-$8c)  hammer bro (body)
+$08d0-$08df ($8d)      star power-up (top)
+$08e0-$08ff ($8e-$8f)  spiny's egg
+$0900-$093f ($90-$93)  climbing, used by big player
+$0940-$095f ($94-$95)  spiny's egg
+$0960-$09df ($96-$9d)  spiny
+$09e0-$09ff ($9e-$9f)  killed player
+$0a00-$0a9f ($a0-$a9)  koopa troopa
+$0aa0-$0b1f ($aa-$b1)  buzzy beetle
+$0b20-$0b7f ($b2-$b7)  cheep-cheep
+$0b80-$0bdf ($b8-$bd)  lakitu
+$0be0-$0ccf ($be-$cc)  bowser
+$0cd0-$0cff ($cd-$cf)  mushroom retainer
+$0d00-$0d0f ($d0)      podoboo (top)
+$0d10-$0d3f ($d1-$d3)  hammer bro (body)
+$0d40-$0d5f ($d4-$d5)  hammer bro (body)
+$0d60-$0d6f ($d6)      fire flower (top)
+$0d70-$0d7f ($d7)      podoboo (bottom)
+$0d80-$0d8f ($d8)      princess (body)
+$0d90-$0d9f ($d9)      fire flower (bottom)
+$0da0-$0dbf ($da-$db)  princess (body)
+$0dc0-$0dff ($dc-$df)  bloober
+$0e00-$0e0f ($e0)      top of vine
+$0e10-$0e1f ($e1)      vine
+$0e20-$0e3f ($e2-$e3)  hammer bro (body)
+$0e40-$0e4f ($e4)      star power-up (bottom)
+$0e50-$0e6f ($e5-$e6)  piranha plant (top)
+$0e70-$0eaf ($e7-$ea)  bullet bill
+$0eb0-$0ebf ($eb)      piranha plant (bottom)
+$0ec0-$0edf ($ec-$ed)  piranha plant (top)
+$0ee0-$0eef ($ee)      piranha plant (bottom)
+$0ef0-$0eff ($ef)      defeated goomba
+$0f00-$0f3f ($f0-$f3)  jumpspring
+$0f40-$0f5f ($f4-$f5)  shelled buzzy beetle
+$0f60-$0f6f ($f6)      "10"
+$0f70-$0f7f ($f7)      "20"
+$0f80-$0f8f ($f8)      "40"
+$0f90-$0f9f ($f9)      "50"
+$0fa0-$0faf ($fa)      "80"
+$0fb0-$0fbf ($fb)      "0"
+$0fc0-$0fcf ($fc)      blank sprite tile
+$0fd0-$0fef ($fd-$fe)  "1-UP"
+$0ff0-$0fff ($ff)      bottom of coin icon
+
+$1000-$109f ($00-$09)  numbers
+$10a0-$123f ($0a-$23)  letters
+$1240-$127f ($24-$27)  blank background tiles
+$1280-$128f ($28)      dash
+$1290-$129f ($29)      times symbol "x"
+$12a0-$12af ($2a)      bullet bill cannon bottom (left)
+$12b0-$12bf ($2b)      exclamation point
+$12c0-$12df ($2c-$2d)  mushroom ledge
+$12e0-$12ef ($2e)      coin icon
+$12f0-$12ff ($2f)      flagpole ball (left)
+$1300-$1330 ($30-$33)  mountain sides and top
+$1340-$134f ($34)      mountain middle
+$1350-$138f ($35-$38)  bush/cloud sides and top
+$1390-$13cf ($39-$3c)  cloud bottom
+$13d0-$13df ($3d)      flagpole ball (right)
+$13e0-$13ff ($3e-$3f)  left pulley
+$1400-$140f ($40)      bullet bill cannon bottom (right)
+$1410-$141f ($41)      top of water/lava
+$1420-$143f ($42-$43)  title screen font
+$1440-$144f ($44)      title screen box corner (upper-left)
+$1450-$145f ($45)      brick with line section
+$1460-$146f ($46)      title screen box left
+$1470-$147f ($47)      brick
+$1480-$148f ($48)      title screen box top
+$1490-$149f ($49)      title screen box corner (upper-right)
+$14a0-$14af ($4a)      title screen box right
+$14b0-$151f ($4b-$51)  tree ledge
+$1520-$152f ($52)      tree ledge stump
+$1530-$156f ($53-$56)  question block
+$1570-$15af ($57-$5a)  empty block
+$15b0-$15cf ($5b-$5c)  right pulley
+$15d0-$15ef ($5d-$5e)  solid white brick (castle levels)
+$15f0-$15ff ($5f)      title screen box corner (lower-left)
+$1600-$163f ($60-$67)  vertical pipe top
+$1680-$16af ($68-$6a)  vertical pipe shaft
+$16b0-$174f ($6b-$74)  mushroom ledge
+$1750-$176f ($75-$76)  mushroom stump (top)
+$1770-$177f ($77)      bowser's bridge (top)
+$1780-$178f ($78)      title screen box bottom
+$1790-$179f ($79)      bowser's bridge (bottom)
+$17a9-$17af ($7a)      title screen box corner (lower-right)
+$17b0-$17ef ($7b-$7e)  axe
+$17f0-$17ff ($7f)      chain
+$1800-$181f ($80-$81)  fence (top)
+$1820-$185f ($82-$85)  solid green rock (water levels)
+$1860-$194f ($86-$94)  sideways pipe
+$1950-$198f ($95-$98)  title screen font
+$1990-$199f ($99)      horizontal rope
+$19a0-$19af ($9a)      vertical rope
+$19b0-$19cf ($9b-$9c)  castle entrance top
+$19d0-$19ef ($9d-$9e)  castle ramparts (top)
+$19f0-$19ff ($9f)      crown symbol used for more than 9 lives
+$1a00-$1a1f ($a0-$a1)  fence (bottom)
+$1a20-$1a3f ($a2-$a3)  rope used with balance platform
+$1a40-$1a4f ($a4)      seaplant
+$1a50-$1a8f ($a5-$a8)  coin
+$1a90-$1aaf ($a9-$aa)  castle ramparts (middle)
+$1ab0-$1aef ($ab-$ae)  solid 3d block
+$1af0-$1aff ($af)      rope used with balance platform (midstate)
+$1b00-$1b3f ($b0-$b3)  cloud level terrain
+$1b40-$1b7f ($b4-$b7)  cracked rock terrain
+$1b80-$1bdf ($b8-$bd)  tree top
+$1be0-$1bff ($be-$bf)  tree trunk
+$1c00-$1c0f ($c0)      bridge railing
+$1c10-$1c1f ($c1)      bridge
+$1c20-$1c5f ($c2-$c5)  coin (water levels)
+$1c60-$1c9f ($c6-$c9)  bullet bill cannon barrel
+$1ca0-$1cdf ($ca-$cd)  bullet bill cannon top
+$1ce0-$1cef ($ce)      mushroom menu icon
+$1cf0-$1cff ($cf)      copyright symbol
+$1d00-$1e80 ($d0-$e8)  title screen font
+$1e90-$1eb0 ($e9-$eb)  seaplant
+$1ec0-$1ff0 (N/A)      title screen and menu game text
+$1ff1-$1fff (N/A)      unused
